@@ -3,11 +3,16 @@
 <head>
     <title>StreamujTo - Stažení aplikace</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
-        .container { max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1 { color: #333; text-align: center; }
-        .description { text-align: center; margin-bottom: 30px; color: #666; }
+        .container { max-width: 700px; margin: 0 auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 30px; font-size: 18px; }
+        .release-info { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #007bff; }
+        .release-info h3 { margin-top: 0; color: #495057; }
+        .release-info p { margin: 8px 0; color: #6c757d; }
+        .release-info strong { color: #212529; }
         ul { list-style-type: none; padding: 0; }
         li { margin: 15px 0; text-align: center; }
         a { 
@@ -19,22 +24,34 @@
             border-radius: 5px; 
             font-weight: bold;
             min-width: 120px;
+            transition: background 0.3s;
         }
         a:hover { background: #0056b3; }
         .footer { text-align: center; margin-top: 30px; color: #999; font-size: 12px; }
+        .commit-info { font-family: monospace; background: #f1f3f4; padding: 10px; border-radius: 4px; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>StreamujTo</h1>
-        <p class="description">Stažení nejnovější verze aplikace</p>
+        <p class="subtitle">Stažení nejnovější verze aplikace</p>
+        
+        <div class="release-info">
+            <h3>📦 Automatický build 2025-07-17 (1d777f4)</h3>
+            <p><strong>Commit:</strong> <span class="commit-info">1d777f4</span></p>
+            <p><strong>Zpráva:</strong> "Aktualizace závislostí, odstranění nepoužívaného kódu a drobné úpravy"</p>
+            <p><strong>Datum commitu:</strong> 2025-07-17T17:57:33+02:00</p>
+        </div>
+        
         <ul>
             <li><a href="releases/latest/linux.zip">🐧 Linux</a></li>
             <li><a href="releases/latest/windows.zip">🖥️ Windows</a></li>
             <li><a href="releases/latest/android.zip">📱 Android</a></li>
         </ul>
+        
         <div class="footer">
-            <p>Automaticky aktualizováno: $(date)</p>
+            <p>Automaticky aktualizováno: 17.07.2025 16:21</p>
+            <p><a href="https://github.com/lksmasin/streamujto-app/commit/1d777f438ef70e3fd963c2bf3879ce44eba33db2" target="_blank">Zobrazit commit na GitHubu</a></p>
         </div>
     </div>
 </body>
