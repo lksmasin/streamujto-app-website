@@ -70,6 +70,22 @@
             margin-bottom: 1rem;
             display: none;
         }
+        .abi-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 1rem;
+        }
+        .abi-btn {
+            background: var(--primary-dark);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            text-decoration: none;
+        }
+        .abi-btn:hover {
+            background: var(--primary);
+        }
     </style>
 </head>
 <body>
@@ -99,15 +115,21 @@
                 <h3>Linux</h3>
                 <span class="version-info" id="ver-linux">Načítám...</span>
                 <span class="error-tag" id="err-linux">Dočasně nedostupné</span>
-                <p>Spustitelný binární soubor (x64/arm64)</p>
+                <p>Spustitelný binární soubor</p>
             </a>
-            <a href="releases/latest/android.zip" class="download-card" id="btn-android">
+            
+            <div class="download-card" id="btn-android">
                 <i class="fab fa-android"></i>
                 <h3>Android / Android TV</h3>
                 <span class="version-info" id="ver-android">Načítám...</span>
                 <span class="error-tag" id="err-android">Dočasně nedostupné</span>
-                <p>APK soubor pro telefony a televize</p>
-            </a>
+                <p>Vyberte architekturu svého zařízení:</p>
+                <div class="abi-links" id="android-links">
+                    <a href="releases/latest/android-arm64.zip" class="abi-btn">ARM64 (Novější)</a>
+                    <a href="releases/latest/android-armv7.zip" class="abi-btn">ARMv7 (Starší)</a>
+                </div>
+            </div>
+
             <a href="releases/latest/windows.zip" class="download-card" id="btn-windows">
                 <i class="fab fa-windows"></i>
                 <h3>Windows</h3>
@@ -120,42 +142,32 @@
         <div style="margin-top: 4rem;">
             <a href="archive.html" style="color: var(--on-surface-variant); text-decoration: underline;">Archiv starších verzí</a>
         </div>
-
-        <div style="margin-top: 6rem; padding: 3rem; background: var(--surface-variant); border-radius: var(--border-radius)">
-            <h2>Zdrojové kódy</h2>
-            <p style="margin-bottom: 0rem">Zveřejnění zdrojových kódů na GitHubu se plánuje v blízké době.</p>
-            <p style="color: var(--primary-light); font-weight: 600; margin-top: 1rem;">Coming Soon</p>
-        </div>
     </main>
 
     <script>
         async function checkAvailability() {
             try {
                 const response = await fetch('releases/latest/version.json');
-                if (!response.ok) {
-                    const fallback = "Nejnovější verze";
-                    document.getElementById('ver-linux').innerText = fallback;
-                    document.getElementById('ver-windows').innerText = fallback;
-                    document.getElementById('ver-android').innerText = fallback;
-                    return;
-                }
+                if (!response.ok) return;
                 const data = await response.json();
                 
-                if (data.version) {
-                    const vText = `Verze ${data.version}`;
-                    document.getElementById('ver-linux').innerText = vText;
-                    document.getElementById('ver-windows').innerText = vText;
-                    document.getElementById('ver-android').innerText = vText;
-                }
+                const versionText = data.version ? `Verze ${data.version}` : "Nejnovější verze";
+                ['linux', 'windows', 'android'].forEach(id => {
+                    const el = document.getElementById(`ver-${id}`);
+                    if (el) el.innerText = versionText;
+                });
 
                 if (data.platforms) {
                     const check = (id, key) => {
-                        if (data.platforms[key] === false) {
+                        const isOk = data.platforms[key];
+                        if (isOk === false) {
                             const btn = document.getElementById(`btn-${id}`);
                             btn.classList.add('disabled');
-                            btn.href = 'javascript:void(0)';
+                            if (btn.tagName === 'A') btn.href = 'javascript:void(0)';
                             document.getElementById(`err-${id}`).style.display = 'inline-block';
                             document.getElementById(`ver-${id}`).style.display = 'none';
+                            const abiLinks = document.getElementById('android-links');
+                            if (id === 'android' && abiLinks) abiLinks.style.display = 'none';
                         }
                     };
                     check('linux', 'linux');
@@ -163,7 +175,7 @@
                     check('android', 'android');
                 }
             } catch (e) {
-                console.error("Nepodařilo se ověřit dostupnost verzí.");
+                console.error("Chyba při kontrole verzí:", e);
             }
         }
         checkAvailability();
@@ -175,6 +187,7 @@
             <a href="faq.html">Časté dotazy</a>
             <a href="download.html">Ke stažení</a>
             <a href="disclaimer.html">Právní doložka</a>
+            <a href="https://discord.gg/1374461716573978734" target="_blank">Discord</a>
         </div>
         <div class="copyright">
             &copy; 2026 StreamujTo. Všechna práva vyhrazena.

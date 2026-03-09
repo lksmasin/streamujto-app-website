@@ -216,6 +216,25 @@ nav a:hover {
     display: block;
 }
 
+/* Discord Section */
+.discord-section {
+    padding: 8rem 2rem;
+    text-align: center;
+    background: radial-gradient(circle at bottom center, rgba(88, 101, 242, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+}
+
+.discord-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.discord-container iframe {
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    border: none;
+}
+
 /* Legal Page Style */
 .legal-content {
     max-width: 800px;
