@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stáhnout | StreamujTo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <style>
+        .download-container {
+            max-width: 1000px;
+            margin: 10rem auto;
+            text-align: center;
+            padding: 2rem;
+        }
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+        .download-card {
+            background: var(--surface-variant);
+            padding: 3rem 2rem;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .download-card:hover:not(.disabled) {
+            transform: translateY(-5px);
+            background: rgba(0, 150, 136, 0.1);
+            border-color: var(--primary);
+        }
+        .download-card i {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        .download-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .download-card p {
+            color: var(--on-surface-variant);
+            font-size: 0.9rem;
+        }
+        .version-info {
+            color: var(--primary-light);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .download-card.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .error-tag {
+            background: var(--error);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-container">
+            <img src="assets/logo.png" alt="StreamujTo Logo">
+            <span>StreamujTo</span>
+        </a>
+        <nav>
+            <ul>
+                <li><a href="index.html#features">Funkce</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="disclaimer.html">Právní info</a></li>
+            </ul>
+        </nav>
+        <a href="download.html" class="btn-download" style="background-color: var(--primary-dark)">Stáhnout</a>
+    </header>
+
+    <main class="download-container">
+        <h1>Stáhnout StreamujTo</h1>
+        <p id="main-subtitle">Vyberte si verzi pro svůj operační systém. Aplikace nevyžaduje instalaci.</p>
+
+        <div class="download-grid">
+            <a href="releases/latest/linux.zip" class="download-card" id="btn-linux">
+                <i class="fab fa-linux"></i>
+                <h3>Linux</h3>
+                <span class="version-info" id="ver-linux">Načítám...</span>
+                <span class="error-tag" id="err-linux">Dočasně nedostupné</span>
+                <p>Spustitelný binární soubor (x64/arm64)</p>
+            </a>
+            <a href="releases/latest/android.zip" class="download-card" id="btn-android">
+                <i class="fab fa-android"></i>
+                <h3>Android / Android TV</h3>
+                <span class="version-info" id="ver-android">Načítám...</span>
+                <span class="error-tag" id="err-android">Dočasně nedostupné</span>
+                <p>APK soubor pro telefony a televize</p>
+            </a>
+            <a href="releases/latest/windows.zip" class="download-card" id="btn-windows">
+                <i class="fab fa-windows"></i>
+                <h3>Windows</h3>
+                <span class="version-info" id="ver-windows">Načítám...</span>
+                <span class="error-tag" id="err-windows">Dočasně nedostupné</span>
+                <p>Spustitelný EXE soubor (x64)</p>
+            </a>
+        </div>
+
+        <div style="margin-top: 4rem;">
+            <a href="archive.html" style="color: var(--on-surface-variant); text-decoration: underline;">Archiv starších verzí</a>
+        </div>
+
+        <div style="margin-top: 6rem; padding: 3rem; background: var(--surface-variant); border-radius: var(--border-radius)">
+            <h2>Zdrojové kódy</h2>
+            <p style="margin-bottom: 0rem">Zveřejnění zdrojových kódů na GitHubu se plánuje v blízké době.</p>
+            <p style="color: var(--primary-light); font-weight: 600; margin-top: 1rem;">Coming Soon</p>
+        </div>
+    </main>
+
+    <script>
+        async function checkAvailability() {
+            try {
+                const response = await fetch('releases/latest/version.json');
+                if (!response.ok) {
+                    const fallback = "Nejnovější verze";
+                    document.getElementById('ver-linux').innerText = fallback;
+                    document.getElementById('ver-windows').innerText = fallback;
+                    document.getElementById('ver-android').innerText = fallback;
+                    return;
+                }
+                const data = await response.json();
+                
+                if (data.version) {
+                    const vText = `Verze ${data.version}`;
+                    document.getElementById('ver-linux').innerText = vText;
+                    document.getElementById('ver-windows').innerText = vText;
+                    document.getElementById('ver-android').innerText = vText;
+                }
+
+                if (data.platforms) {
+                    const check = (id, key) => {
+                        if (data.platforms[key] === false) {
+                            const btn = document.getElementById(`btn-${id}`);
+                            btn.classList.add('disabled');
+                            btn.href = 'javascript:void(0)';
+                            document.getElementById(`err-${id}`).style.display = 'inline-block';
+                            document.getElementById(`ver-${id}`).style.display = 'none';
+                        }
+                    };
+                    check('linux', 'linux');
+                    check('windows', 'windows');
+                    check('android', 'android');
+                }
+            } catch (e) {
+                console.error("Nepodařilo se ověřit dostupnost verzí.");
+            }
+        }
+        checkAvailability();
+    </script>
+
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">Domů</a>
+            <a href="faq.html">Časté dotazy</a>
+            <a href="download.html">Ke stažení</a>
+            <a href="disclaimer.html">Právní doložka</a>
+        </div>
+        <div class="copyright">
+            &copy; 2026 StreamujTo. Všechna práva vyhrazena.
+        </div>
+    </footer>
+
+</body>
+</html>

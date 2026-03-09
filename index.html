@@ -1,55 +1,118 @@
 <!DOCTYPE html>
-<html>
+<html lang="cs">
 <head>
-    <title>StreamujTo - Stažení aplikace</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background: #181a20; color: #f1f3f4; }
-        .container { max-width: 700px; margin: 0 auto; background: #23262e; padding: 40px; border-radius: 10px; box-shadow: 0 2px 16px rgba(0,0,0,0.5); }
-        h1 { color: #fff; text-align: center; margin-bottom: 10px; }
-        .subtitle { text-align: center; color: #b0b3b8; margin-bottom: 30px; font-size: 18px; }
-        .release-info { background: #23262e; padding: 20px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #5865f2; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-        .release-info h3 { margin-top: 0; color: #b0b3b8; }
-        .release-info p { margin: 8px 0; color: #d1d5db; }
-        .release-info strong { color: #fff; }
-        ul { list-style-type: none; padding: 0; }
-        li { margin: 15px 0; text-align: center; }
-        a { display: inline-block; padding: 15px 30px; background: #5865f2; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold; min-width: 120px; transition: background 0.3s; box-shadow: 0 2px 8px rgba(88,101,242,0.15); }
-        a:hover { background: #404eed; }
-        .footer { text-align: center; margin-top: 30px; color: #b0b3b8; font-size: 12px; }
-        .commit-info { font-family: monospace; background: #23262e; padding: 10px; border-radius: 4px; color: #b0b3b8; }
-        .discord-widget { display: flex; justify-content: center; margin: 30px 0; }
-        .discord-widget iframe { border-radius: 12px; box-shadow: 0 2px 16px rgba(88,101,242,0.25); border: none; background: #23262e; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamujTo | Moderní filmový zážitek</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="assets/logo.png">
 </head>
 <body>
-    <div class="container">
-        <h1>StreamujTo</h1>
-        <p class="subtitle">Stažení nejnovější verze aplikace</p>
 
-        <div class="release-info">
-            <h3>📦 Automatický build 2026-01-03 (cbd7989)</h3>
-            <p><strong>Verze:</strong> 4.0.0+1</p>
-            <p><strong>Commit:</strong> <span class="commit-info">cbd7989</span></p>
-            <p><strong>Zpráva:</strong> "ci: free up disk space on runners to prevent build failure"</p>
-            <p><strong>Datum commitu:</strong> 2026-01-03T19:46:08+01:00</p>
+    <header>
+        <a href="index.html" class="logo-container">
+            <img src="assets/logo.png" alt="StreamujTo Logo">
+            <span>StreamujTo</span>
+        </a>
+        <nav>
+            <ul>
+                <li><a href="#features">Funkce</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="#gallery">Galerie</a></li>
+                <li><a href="disclaimer.html">Právní info</a></li>
+            </ul>
+        </nav>
+        <a href="download.html" class="btn-download">Stáhnout</a>
+    </header>
+
+    <section class="hero">
+        <h1>Najděte, co hledáte. <br><span style="color: var(--primary)">Okamžitě.</span></h1>
+        <p>StreamujTo funguje jako inteligentní vyhledávač a filtr pro vaši filmovou knihovnu. Najděte si jakýkoliv titul a aplikace jej automaticky lokalizuje ve vašich připojených úložištích.</p>
+        <div class="cta-buttons">
+            <a href="download.html" class="btn-download" style="padding: 1rem 2.5rem; font-size: 1.2rem;">Vyzkoušet zdarma</a>
         </div>
-
-        <ul>
-            <li><a href="releases/latest/linux.zip">🐧 Linux</a></li>
-            <li><a href="releases/latest/windows.zip">🖥️ Windows</a></li>
-            <li><a href="releases/latest/android.zip">📱 Android</a></li>
-        </ul>
-
-        <div class="discord-widget">
-            <iframe src="https://discord.com/widget?id=1374461716573978734&theme=dark" width="350" height="500" allowtransparency="true" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+        
+        <div class="hero-mockup">
+            <img src="assets/screenshots/home_screen.png" alt="StreamujTo Hlavní obrazovka">
         </div>
+    </section>
 
-        <div class="footer">
-            <p>Automaticky aktualizováno: 03.01.2026 19:17</p>
-            <p><a href="https://github.com/lksmasin/streamujto-app/commit/cbd7989a0506282a41c671c18ef28ccf95b2f69a" target="_blank">Zobrazit commit na GitHubu</a></p>
+    <section class="features" id="features">
+        <h2 class="section-title">Jak to funguje?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-search"></i>
+                <h3>Unifikované vyhledávání</h3>
+                <p>Hledejte v milionech filmů a seriálů. Aplikace využívá výkonná API pro bleskové vyhledávání metadat a plakátů.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-filter"></i>
+                <h3>Inteligentní filtr</h3>
+                <p>Aplikace slouží jako filtr, který propojuje informace o filmu s vašimi vlastními zdroji a úložišti.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-puzzle-piece"></i>
+                <h3>Modulární Addony</h3>
+                <p>Přidejte si doplňky pro svá specifická úložiště. Vy rozhodujete, kam se má vyhledávač dívat.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-users"></i>
+                <h3>Více profilů</h3>
+                <p>Podobně jako na velkých streamovacích službách si každý člen rodiny může vytvořit vlastní profil s vlastní historií.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-tv"></i>
+                <h3>Podpora Chromecast</h3>
+                <p>Přeneste si kino do obýváku. Streamujte obsah z mobilu nebo počítače přímo do vaší televize.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-mobile-alt"></i>
+                <h3>Multiplatformní</h3>
+                <p>Dostupné pro Linux, Windows a Android. Vaše knihovna vás následuje všude.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fab fa-discord"></i>
+                <h3>Discord RPC</h3>
+                <p>Ukažte přátelům, co právě sledujete, díky integraci bohaté přítomnosti v aplikaci Discord.</p>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <section class="gallery" id="gallery">
+        <h2 class="section-title">Pohled do aplikace</h2>
+        <div class="screenshot-container">
+            <div class="screenshot-item">
+                <img src="assets/screenshots/movie_screen.png" alt="Detail filmu">
+            </div>
+            <div class="screenshot-item">
+                <img src="assets/screenshots/tvs_screen.png" alt="Seriály">
+            </div>
+            <div class="screenshot-item">
+                <img src="assets/screenshots/live_tv.png" alt="Live TV">
+            </div>
+            <div class="screenshot-item">
+                <img src="assets/screenshots/upnext_and_featured_movies.png" alt="Featured">
+            </div>
+            <div class="screenshot-item">
+                <img src="assets/screenshots/profile_select.png" alt="Výběr profilu">
+            </div>
+        </div>
+        <p style="text-align: center; margin-top: 2rem; color: var(--on-surface-variant)">Posunutím do stran zobrazíte další snímky</p>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">Domů</a>
+            <a href="faq.html">Časté dotazy</a>
+            <a href="download.html">Ke stažení</a>
+            <a href="disclaimer.html">Právní doložka</a>
+        </div>
+        <div class="copyright">
+            &copy; 2026 StreamujTo. Všechna práva vyhrazena. <br>
+            Tato aplikace nehostuje žádný obsah.
+        </div>
+    </footer>
+
 </body>
 </html>

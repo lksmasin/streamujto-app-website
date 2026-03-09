@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archiv verzí | StreamujTo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <style>
+        .archive-container {
+            max-width: 900px;
+            margin: 8rem auto;
+            padding: 2rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            background: var(--surface-variant);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+        th, td {
+            padding: 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        th {
+            background: rgba(0, 150, 136, 0.2);
+            color: var(--primary-light);
+            font-weight: 600;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .download-link {
+            color: var(--primary-light);
+            text-decoration: none;
+            margin-right: 1rem;
+        }
+        .download-link:hover {
+            text-decoration: underline;
+        }
+        .empty-message {
+            text-align: center;
+            padding: 3rem;
+            color: var(--on-surface-variant);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-container">
+            <img src="assets/logo.png" alt="StreamujTo Logo">
+            <span>StreamujTo</span>
+        </a>
+        <nav>
+            <ul>
+                <li><a href="index.html#features">Funkce</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="disclaimer.html">Právní info</a></li>
+            </ul>
+        </nav>
+        <a href="download.html" class="btn-download">Stáhnout</a>
+    </header>
+
+    <main class="archive-container">
+        <h1>Archiv starších verzí</h1>
+        <p>Zde naleznete předchozí sestavení aplikace StreamujTo.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Verze</th>
+                    <th>Datum</th>
+                    <th>Ke stažení</th>
+                </tr>
+            </thead>
+            <tbody id="archive-body">
+                <tr>
+                    <td colspan="3" class="empty-message">Načítám archiv...</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <script>
+        // Tento skript načte soubor versions.json, který workflow automaticky generuje
+        async function loadArchive() {
+            const body = document.getElementById('archive-body');
+            try {
+                const response = await fetch('releases/versions.json');
+                if (!response.ok) throw new Error('Archiv je zatím prázdný');
+                
+                const versions = await response.json();
+                if (versions.length === 0) throw new Error('Žádné verze k zobrazení');
+
+                body.innerHTML = '';
+                versions.reverse().forEach(v => {
+                    const row = document.createElement('tr');
+                    const date = new Date(v.date).toLocaleDateString('cs-CZ');
+                    row.innerHTML = `
+                        <td>${v.version}</td>
+                        <td>${date}</td>
+                        <td>
+                            <a href="releases/archive/${v.version}/linux.zip" class="download-link">Linux</a>
+                            <a href="releases/archive/${v.version}/windows.zip" class="download-link">Windows</a>
+                            <a href="releases/archive/${v.version}/android.zip" class="download-link">Android</a>
+                        </td>
+                    `;
+                    body.appendChild(row);
+                });
+            } catch (e) {
+                body.innerHTML = `<tr><td colspan="3" class="empty-message">${e.message}</td></tr>`;
+            }
+        }
+        loadArchive();
+    </script>
+
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">Domů</a>
+            <a href="faq.html">Časté dotazy</a>
+            <a href="download.html">Ke stažení</a>
+            <a href="disclaimer.html">Právní doložka</a>
+        </div>
+        <div class="copyright">
+            &copy; 2026 StreamujTo. Všechna práva vyhrazena.
+        </div>
+    </footer>
+
+</body>
+</html>
