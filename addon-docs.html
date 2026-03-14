@@ -1,0 +1,1612 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamujTo | Dokumentace Addon Systému</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <style>
+        /* ===== Docs-specific styles ===== */
+        .docs-layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 6rem auto 0;
+            padding: 2rem;
+            gap: 3rem;
+        }
+
+        /* Sidebar / TOC */
+        .docs-sidebar {
+            position: sticky;
+            top: 6rem;
+            width: 260px;
+            min-width: 260px;
+            max-height: calc(100vh - 7rem);
+            overflow-y: auto;
+            padding-right: 1rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-dark) transparent;
+        }
+        .docs-sidebar::-webkit-scrollbar { width: 4px; }
+        .docs-sidebar::-webkit-scrollbar-thumb { background: var(--primary-dark); border-radius: 2px; }
+
+        .docs-sidebar h4 {
+            color: var(--primary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 1.5rem 0 0.5rem;
+        }
+        .docs-sidebar h4:first-child { margin-top: 0; }
+
+        .docs-sidebar a {
+            display: block;
+            padding: 0.35rem 0.75rem;
+            color: var(--on-surface-variant);
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-left: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .docs-sidebar a:hover,
+        .docs-sidebar a.active {
+            color: var(--primary);
+            border-left-color: var(--primary);
+            background: rgba(0, 150, 136, 0.05);
+        }
+
+        /* Main content */
+        .docs-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .docs-content h1 {
+            font-size: 2.75rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            line-height: 1.15;
+        }
+        .docs-content .subtitle {
+            font-size: 1.2rem;
+            color: var(--on-surface-variant);
+            margin-bottom: 3rem;
+        }
+
+        .docs-content h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 3.5rem 0 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            scroll-margin-top: 5rem;
+        }
+        .docs-content h2:first-of-type { border-top: none; margin-top: 0; }
+
+        .docs-content h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 2rem 0 0.75rem;
+            color: var(--primary-light);
+            scroll-margin-top: 5rem;
+        }
+
+        .docs-content h4 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin: 1.5rem 0 0.5rem;
+            scroll-margin-top: 5rem;
+        }
+
+        .docs-content p {
+            color: var(--on-surface-variant);
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        .docs-content ul, .docs-content ol {
+            color: var(--on-surface-variant);
+            margin: 0 0 1rem 1.5rem;
+            line-height: 1.8;
+        }
+
+        .docs-content li { margin-bottom: 0.25rem; }
+
+        .docs-content strong { color: var(--on-surface); }
+        .docs-content code {
+            background: rgba(255,255,255,0.08);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            color: var(--primary-light);
+        }
+
+        /* Code blocks */
+        pre {
+            background: #0d0d0d;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            overflow-x: auto;
+            margin: 1rem 0 1.5rem;
+            position: relative;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: var(--on-surface);
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        .code-label {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.75rem;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.25);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            pointer-events: none;
+        }
+
+        /* Tables */
+        .docs-table-wrapper { overflow-x: auto; margin: 1rem 0 1.5rem; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        th {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            background: var(--surface-variant);
+            color: var(--primary-light);
+            font-weight: 600;
+            border-bottom: 2px solid rgba(0,150,136,0.3);
+            white-space: nowrap;
+        }
+        td {
+            padding: 0.65rem 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: var(--on-surface-variant);
+            vertical-align: top;
+        }
+        tr:hover td { background: rgba(255,255,255,0.02); }
+
+        /* Info / Warning boxes */
+        .callout {
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+        }
+        .callout i { margin-top: 0.2rem; font-size: 1.1rem; flex-shrink: 0; }
+        .callout p { margin: 0; }
+
+        .callout-info {
+            background: rgba(0, 150, 136, 0.08);
+            border: 1px solid rgba(0, 150, 136, 0.25);
+        }
+        .callout-info i { color: var(--primary); }
+
+        .callout-warn {
+            background: rgba(255, 152, 0, 0.08);
+            border: 1px solid rgba(255, 152, 0, 0.25);
+        }
+        .callout-warn i { color: #ff9800; }
+
+        .callout-danger {
+            background: rgba(244, 67, 54, 0.08);
+            border: 1px solid rgba(244, 67, 54, 0.25);
+        }
+        .callout-danger i { color: #f44336; }
+
+        /* Diagram */
+        .diagram {
+            background: var(--surface-variant);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            color: var(--on-surface);
+            overflow-x: auto;
+            white-space: pre;
+        }
+        .diagram .hl { color: var(--primary); font-weight: 700; }
+        .diagram .dim { color: var(--on-surface-variant); }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 0.15em 0.5em;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge-required { background: rgba(244,67,54,0.15); color: #f44336; }
+        .badge-optional { background: rgba(255,152,0,0.15); color: #ff9800; }
+
+        /* Responsive */
+        @media (max-width: 960px) {
+            .docs-layout { flex-direction: column; }
+            .docs-sidebar {
+                position: static;
+                width: 100%;
+                max-height: none;
+                border-bottom: 1px solid rgba(255,255,255,0.08);
+                padding-bottom: 1rem;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-container">
+            <img src="assets/logo.png" alt="StreamujTo Logo">
+            <span>StreamujTo</span>
+        </a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Domů</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+                <li><a href="disclaimer.html">Právní info</a></li>
+                <li><a href="addon-docs.html" style="color: var(--primary)">Addon Docs</a></li>
+            </ul>
+        </nav>
+        <a href="download.html" class="btn-download">Stáhnout</a>
+    </header>
+
+    <div class="docs-layout">
+
+        <!-- ============================ SIDEBAR ============================ -->
+        <aside class="docs-sidebar">
+            <h4>Přehled</h4>
+            <a href="#uvod">Úvod</a>
+            <a href="#architektura">Architektura</a>
+            <a href="#zivotni-cyklus">Životní cyklus</a>
+
+            <h4>JSON Struktura</h4>
+            <a href="#korenova-struktura">Kořenová struktura</a>
+            <a href="#manifest">manifest</a>
+            <a href="#auth">auth</a>
+            <a href="#search">search</a>
+            <a href="#stream-url">streamUrl</a>
+
+            <h4>Akce (Steps)</h4>
+            <a href="#akce-http">http</a>
+            <a href="#akce-md5crypt">md5crypt</a>
+            <a href="#akce-sha1">sha1</a>
+            <a href="#akce-md5">md5</a>
+            <a href="#akce-assert">assert</a>
+            <a href="#akce-clear">clear</a>
+            <a href="#akce-regex">regex</a>
+            <a href="#akce-set">set</a>
+            <a href="#akce-parallel">parallel</a>
+            <a href="#optional-steps">Volitelné kroky</a>
+
+            <h4>Template Engine</h4>
+            <a href="#promenne">Proměnné</a>
+            <a href="#interpolace">Interpolace</a>
+            <a href="#filtry">Filtry</a>
+            <a href="#specialni-promenne">Speciální proměnné</a>
+
+            <h4>Parsování odpovědí</h4>
+            <a href="#xml-parsing">XML parsing</a>
+            <a href="#json-parsing">JSON parsing</a>
+            <a href="#seznam-vysledku">Seznam výsledků</a>
+
+            <h4>Autentizace</h4>
+            <a href="#auth-typy">Typy autentizace</a>
+            <a href="#auth-pole">Pole (fields)</a>
+            <a href="#auth-flow">Login / Check / Logout</a>
+
+            <h4>Příklady</h4>
+            <a href="#priklad-kompletni">Kompletní addon</a>
+            <a href="#priklad-bez-auth">Addon bez autentizace</a>
+            <a href="#priklad-json-api">JSON API addon</a>
+            <a href="#priklad-token">Token-based auth</a>
+
+            <h4>Reference</h4>
+            <a href="#capabilities">Capabilities</a>
+            <a href="#addon-types">Addon Types</a>
+            <a href="#chybove-stavy">Chybové stavy</a>
+            <a href="#omezeni">Omezení a limity</a>
+            <a href="#pravni-upozorneni">Právní upozornění</a>
+        </aside>
+
+        <!-- ============================ CONTENT ============================ -->
+        <main class="docs-content">
+
+            <h1>Dokumentace Addon Systému</h1>
+            <p class="subtitle">Kompletní průvodce tvorbou externích doplňků úložišť pro StreamujTo</p>
+
+            <!-- ========================= ÚVOD ========================= -->
+            <h2 id="uvod">Úvod</h2>
+            <p>
+                Aplikace StreamujTo v základní instalaci <strong>neobsahuje žádný zdroj streamů</strong> ani přístup k žádnému úložišti. 
+                Veškerá funkcionalita spojená s vyhledáváním a přehráváním souborů z externích služeb je zajištěna <strong>doplňky (addony)</strong>, 
+                které si uživatel importuje sám – z URL adresy nebo lokálního JSON souboru.
+            </p>
+            <p>
+                Addon je <strong>čistě deklarativní JSON soubor</strong>, který popisuje:
+            </p>
+            <ul>
+                <li><strong>Manifest</strong> – metadata addonu (název, autor, verze, schopnosti)</li>
+                <li><strong>Autentizace</strong> – jak se přihlásit k dané službě</li>
+                <li><strong>Vyhledávání</strong> – jak vyhledat soubory podle dotazu</li>
+                <li><strong>Streamování</strong> – jak získat přímý odkaz na stream</li>
+            </ul>
+            <p>
+                Addon neobsahuje žádný spustitelný kód. Jedná se o <em>deklarativní pipeline</em>, 
+                kterou interpretuje vestavěný <strong>Addon Engine</strong> aplikace.
+            </p>
+
+            <div class="callout callout-info">
+                <i class="fas fa-info-circle"></i>
+                <p>Addon systém je navržen tak, aby byl maximálně bezpečný. JSON definice nemůže spustit libovolný kód – může pouze provádět předem definované akce (HTTP požadavky, hashování, regex).</p>
+            </div>
+
+            <!-- ========================= ARCHITEKTURA ========================= -->
+            <h2 id="architektura">Architektura</h2>
+            <p>Addon systém se skládá z následujících komponent:</p>
+
+            <div class="diagram"><span class="dim">┌──────────────────────────────────────────────────────────────┐</span>
+<span class="dim">│</span>                        <span class="hl">StreamujTo App</span>                         <span class="dim">│</span>
+<span class="dim">│                                                              │</span>
+<span class="dim">│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐   │</span>
+<span class="dim">│  │</span>  <span class="hl">AddonStore</span>   <span class="dim">│    │</span> <span class="hl">AddonRegistry</span> <span class="dim">│    │</span> <span class="hl">AddonImporter</span> <span class="dim">│   │</span>
+<span class="dim">│  │</span> (persistence) <span class="dim">│    │</span>  (runtime)    <span class="dim">│    │</span>  (URL/file)   <span class="dim">│   │</span>
+<span class="dim">│  └──────┬───────┘    └──────┬───────┘    └──────┬───────┘   │</span>
+<span class="dim">│         │                   │                   │           │</span>
+<span class="dim">│         └───────────┬───────┘───────────┬───────┘           │</span>
+<span class="dim">│                     ▼                   ▼                   │</span>
+<span class="dim">│           ┌──────────────────────────────────┐              │</span>
+<span class="dim">│           │</span>         <span class="hl">AddonEngine</span>                <span class="dim">│              │</span>
+<span class="dim">│           │</span>   (JSON interpreter / runner)    <span class="dim">│              │</span>
+<span class="dim">│           └────────────────┬─────────────┘              │</span>
+<span class="dim">│                            │                             │</span>
+<span class="dim">│                            ▼                             │</span>
+<span class="dim">│           ┌──────────────────────────────────┐              │</span>
+<span class="dim">│           │</span>       <span class="hl">AddonInterface</span>                <span class="dim">│              │</span>
+<span class="dim">│           │</span>  (abstract API kontrakt)         <span class="dim">│              │</span>
+<span class="dim">│           └──────────────────────────────────┘              │</span>
+<span class="dim">└──────────────────────────────────────────────────────────────┘</span></div>
+
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Komponenta</th><th>Popis</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>AddonDefinition</code></td><td>Datový model parsovaný z JSON souboru. Obsahuje manifest, auth, search a streamUrl sekce.</td></tr>
+                        <tr><td><code>AddonEngine</code></td><td>Interpret, který implementuje <code>AddonInterface</code> na základě JSON definice. Vykonává pipeline kroků (steps).</td></tr>
+                        <tr><td><code>AddonStore</code></td><td>Persistentní úložiště (SharedPreferences). Ukládá raw JSON definice, takže přežijí restart aplikace.</td></tr>
+                        <tr><td><code>AddonRegistry</code></td><td>Singleton registr běžících addonů. Spravuje stav, credentials, aktivní addon.</td></tr>
+                        <tr><td><code>AddonImporter</code></td><td>Import z URL (HTTP download) nebo lokálního souboru (file picker).</td></tr>
+                        <tr><td><code>AddonInterface</code></td><td>Abstraktní kontrakt definující metody: <code>authenticate</code>, <code>search</code>, <code>getStreamUrl</code>, atd.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ========================= ŽIVOTNÍ CYKLUS ========================= -->
+            <h2 id="zivotni-cyklus">Životní cyklus addonu</h2>
+            <ol>
+                <li><strong>Import</strong> – uživatel zadá URL nebo vybere JSON soubor. <code>AddonImporter</code> stáhne/přečte JSON a validuje ho.</li>
+                <li><strong>Parsování</strong> – <code>AddonDefinition.fromJson()</code> rozloží JSON na strukturované objekty (manifest, auth, search, streamUrl).</li>
+                <li><strong>Registrace</strong> – vytvoří se <code>AddonEngine</code> instance a zaregistruje se do <code>AddonRegistry</code>.</li>
+                <li><strong>Persistence</strong> – raw JSON se uloží do <code>AddonStore</code> (SharedPreferences), aby addon přežil restart.</li>
+                <li><strong>Autentizace</strong> – uživatel vyplní přihlašovací údaje → engine spustí <code>auth.login</code> pipeline.</li>
+                <li><strong>Použití</strong> – při vyhledávání engine spustí <code>search</code> pipeline, při přehrávání <code>streamUrl</code> pipeline.</li>
+                <li><strong>Obnova</strong> – při startu aplikace <code>StorageManager</code> načte všechny definice z <code>AddonStore</code> a obnoví enginy + autentizaci.</li>
+            </ol>
+
+            <!-- ========================= KOŘENOVÁ STRUKTURA ========================= -->
+            <h2 id="korenova-struktura">Kořenová struktura JSON</h2>
+            <p>Každý addon je jeden JSON soubor s následující kořenovou strukturou:</p>
+            <pre><code><span class="code-label">JSON</span>{
+  "manifest": { ... },
+  "auth": { ... },
+  "search": { ... },
+  "streamUrl": { ... }
+}</code></pre>
+
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Klíč</th><th>Typ</th><th>Povinný</th><th>Popis</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>manifest</code></td><td>Object</td><td><span class="badge badge-required">Ano</span></td><td>Metadata addonu – identifikace, verze, schopnosti.</td></tr>
+                        <tr><td><code>auth</code></td><td>Object</td><td><span class="badge badge-optional">Ne</span></td><td>Definice autentizačního flow. Pokud chybí, addon nevyžaduje přihlášení.</td></tr>
+                        <tr><td><code>search</code></td><td>Object</td><td><span class="badge badge-required">Ano</span></td><td>Pipeline pro vyhledávání souborů.</td></tr>
+                        <tr><td><code>streamUrl</code></td><td>Object</td><td><span class="badge badge-required">Ano</span></td><td>Pipeline pro získání přímého stream odkazu.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ========================= MANIFEST ========================= -->
+            <h2 id="manifest">Sekce <code>manifest</code></h2>
+            <p>Manifest obsahuje veškeré metadata o addonu. Tyto informace se zobrazují v nastavení aplikace.</p>
+            <pre><code><span class="code-label">JSON</span>{
+  "manifest": {
+    "id": "muj-addon",
+    "name": "Můj Addon",
+    "version": "1.0.0",
+    "description": "Popis toho, co addon dělá.",
+    "author": "Jan Novák",
+    "type": "api",
+    "capabilities": ["search", "auth", "directStream"],
+    "homeUrl": "https://example.com",
+    "iconUrl": "https://example.com/icon.png"
+  }
+}</code></pre>
+
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead>
+                        <tr><th>Pole</th><th>Typ</th><th>Povinný</th><th>Popis</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>id</code></td><td>String</td><td><span class="badge badge-required">Ano</span></td><td>Unikátní identifikátor addonu. Používá se interně pro ukládání stavu, credentials apod. Doporučený formát: <code>kebab-case</code> bez mezer a diakritiky (např. <code>"webshare"</code>, <code>"muj-addon"</code>).</td></tr>
+                        <tr><td><code>name</code></td><td>String</td><td><span class="badge badge-required">Ano</span></td><td>Zobrazovaný název addonu v UI (např. <code>"Webshare.cz"</code>).</td></tr>
+                        <tr><td><code>version</code></td><td>String</td><td><span class="badge badge-optional">Ne</span></td><td>Verze addonu ve formátu semver. Výchozí: <code>"1.0.0"</code>.</td></tr>
+                        <tr><td><code>description</code></td><td>String</td><td><span class="badge badge-optional">Ne</span></td><td>Krátký popis addonu.</td></tr>
+                        <tr><td><code>author</code></td><td>String</td><td><span class="badge badge-optional">Ne</span></td><td>Jméno autora addonu. Výchozí: <code>"Unknown"</code>.</td></tr>
+                        <tr><td><code>type</code></td><td>String</td><td><span class="badge badge-optional">Ne</span></td><td>Typ addonu: <code>"api"</code>, <code>"scraper"</code> nebo <code>"hybrid"</code>. Výchozí: <code>"api"</code>. Viz <a href="#addon-types">Addon Types</a>.</td></tr>
+                        <tr><td><code>capabilities</code></td><td>Array&lt;String&gt;</td><td><span class="badge badge-optional">Ne</span></td><td>Seznam schopností addonu. Výchozí: <code>["search"]</code>. Viz <a href="#capabilities">Capabilities</a>.</td></tr>
+                        <tr><td><code>homeUrl</code></td><td>String</td><td><span class="badge badge-optional">Ne</span></td><td>URL domovské stránky služby.</td></tr>
+                        <tr><td><code>iconUrl</code></td><td>String</td><td><span class="badge badge-optional">Ne</span></td><td>URL ikony addonu (zobrazuje se v UI).</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout callout-info">
+                <i class="fas fa-lightbulb"></i>
+                <p>Pole <code>id</code> musí být napříč všemi addony unikátní. Pokud se pokusíte importovat addon se stejným <code>id</code> jako již nainstalovaný, import bude odmítnut.</p>
+            </div>
+
+            <!-- ========================= AUTH ========================= -->
+            <h2 id="auth">Sekce <code>auth</code></h2>
+            <p>Definuje autentizační flow – tj. jaká pole uživatel vyplní a jaké kroky se provedou pro přihlášení, ověření stavu a odhlášení.</p>
+            <pre><code><span class="code-label">JSON</span>{
+  "auth": {
+    "type": "credentials",
+    "fields": [
+      {
+        "key": "username",
+        "label": "Uživatelské jméno",
+        "hint": "Zadejte uživatelské jméno",
+        "isSecret": false,
+        "required": true
+      },
+      {
+        "key": "password",
+        "label": "Heslo",
+        "hint": "Zadejte heslo",
+        "isSecret": true,
+        "required": true
+      }
+    ],
+    "login": [ ... ],
+    "check": [ ... ],
+    "logout": [ ... ]
+  }
+}</code></pre>
+
+            <h3 id="auth-typy">Typy autentizace</h3>
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Hodnota <code>type</code></th><th>Popis</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>"none"</code></td><td>Addon nevyžaduje přihlášení. Sekce <code>auth</code> může zcela chybět.</td></tr>
+                        <tr><td><code>"credentials"</code></td><td>Klasické přihlášení uživatelským jménem a heslem.</td></tr>
+                        <tr><td><code>"token"</code></td><td>Autentizace API tokenem / klíčem.</td></tr>
+                        <tr><td><code>"oauth"</code></td><td>OAuth2 flow (rezervováno pro budoucí použití).</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 id="auth-pole">Definice polí (<code>fields</code>)</h3>
+            <p>Pole definují formulář, který se zobrazí uživateli v nastavení. Klíč (<code>key</code>) se použije jako název proměnné – viz <a href="#promenne">Proměnné</a>.</p>
+
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Pole</th><th>Typ</th><th>Povinný</th><th>Popis</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>key</code></td><td>String</td><td><span class="badge badge-required">Ano</span></td><td>Unikátní klíč pole. Stane se názvem runtime proměnné (např. <code>"username"</code>, <code>"api_key"</code>).</td></tr>
+                        <tr><td><code>label</code></td><td>String</td><td><span class="badge badge-required">Ano</span></td><td>Popisek zobrazený v UI.</td></tr>
+                        <tr><td><code>hint</code></td><td>String</td><td><span class="badge badge-optional">Ne</span></td><td>Placeholder / nápověda v textovém poli.</td></tr>
+                        <tr><td><code>isSecret</code></td><td>Boolean</td><td><span class="badge badge-optional">Ne</span></td><td>Zobrazit jako heslo (skryté znaky). Výchozí: <code>false</code>.</td></tr>
+                        <tr><td><code>required</code></td><td>Boolean</td><td><span class="badge badge-optional">Ne</span></td><td>Je pole povinné? Výchozí: <code>true</code>.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 id="auth-flow">Login / Check / Logout pipelines</h3>
+            <p>Každá z těchto sekcí je <strong>pole kroků (steps)</strong> – viz <a href="#akce-http">Akce</a>.</p>
+
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Pipeline</th><th>Kdy se spouští</th><th>Povinný</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>login</code></td><td>Když uživatel vyplní credentials a potvrdí přihlášení.</td><td><span class="badge badge-optional">Ne</span> (ale bez něj se přihlášení nespustí)</td></tr>
+                        <tr><td><code>check</code></td><td>Když engine potřebuje ověřit, zda je session stále platná.</td><td><span class="badge badge-optional">Ne</span> (fallback: kontrola existence proměnné <code>token</code>)</td></tr>
+                        <tr><td><code>logout</code></td><td>Když se uživatel odhlásí.</td><td><span class="badge badge-optional">Ne</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout callout-info">
+                <i class="fas fa-info-circle"></i>
+                <p>Pokud pipeline <code>check</code> není definován, engine jako fallback zkontroluje, zda existuje neprázdná runtime proměnná <code>token</code>. Proto je doporučeno, aby login kroky uložily token do proměnné s klíčem <code>"token"</code>.</p>
+            </div>
+
+            <!-- ========================= SEARCH ========================= -->
+            <h2 id="search">Sekce <code>search</code></h2>
+            <p>Definuje pipeline pro vyhledávání souborů. Výsledkem musí být seznam položek (viz <a href="#seznam-vysledku">Seznam výsledků</a>).</p>
+            <pre><code><span class="code-label">JSON</span>{
+  "search": {
+    "steps": [
+      {
+        "action": "http",
+        "method": "POST",
+        "url": "https://api.example.com/search",
+        "contentType": "application/x-www-form-urlencoded",
+        "body": "q={{query}}&limit=100&token={{token}}",
+        "responseType": "xml",
+        "listElement": "file",
+        "itemMapping": {
+          "title": "name",
+          "size": "size",
+          "link": "ident"
+        }
+      }
+    ]
+  }
+}</code></pre>
+
+            <p>Search pipeline má přístup k těmto automaticky dostupným proměnným:</p>
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Proměnná</th><th>Hodnota</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>{{query}}</code></td><td>Hledaný text zadaný uživatelem.</td></tr>
+                        <tr><td><code>{{page}}</code></td><td>Číslo stránky (1-based) pro stránkování výsledků.</td></tr>
+                        <tr><td><code>{{token}}</code></td><td>Autentizační token (pokud addon vyžaduje auth).</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Item Mapping</h3>
+            <p>Klíčový parametr HTTP kroku v search pipeline je <code>itemMapping</code>, který mapuje pole z odpovědi na interní strukturu:</p>
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Cílové pole</th><th>Povinný</th><th>Popis</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>title</code> nebo <code>name</code></td><td><span class="badge badge-required">Ano</span></td><td>Název souboru. Engine nejdřív hledá <code>title</code>, pak <code>name</code>.</td></tr>
+                        <tr><td><code>size</code></td><td><span class="badge badge-optional">Ne</span></td><td>Velikost souboru <strong>v bajtech</strong> (celé číslo). Engine automaticky převede na čitelný formát (MB/GB).</td></tr>
+                        <tr><td><code>link</code> nebo <code>url</code></td><td><span class="badge badge-required">Ano</span></td><td>Unikátní identifikátor položky. Bude předán do <code>streamUrl</code> pipeline jako <code>{{identifier}}</code>.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ========================= STREAM URL ========================= -->
+            <h2 id="stream-url">Sekce <code>streamUrl</code></h2>
+            <p>Definuje pipeline pro získání přímého streamovacího odkazu ze zvoleného souboru.</p>
+            <pre><code><span class="code-label">JSON</span>{
+  "streamUrl": {
+    "steps": [
+      {
+        "action": "http",
+        "method": "POST",
+        "url": "https://api.example.com/file_link",
+        "contentType": "application/x-www-form-urlencoded",
+        "body": "ident={{identifier}}&token={{token}}",
+        "responseType": "xml",
+        "outputs": {
+          "stream_url": "link"
+        }
+      }
+    ],
+    "result": "{{stream_url}}",
+    "headers": {
+      "Referer": "https://example.com/",
+      "User-Agent": "StreamujTo/1.0",
+      "Authorization": "Bearer {{token}}"
+    }
+  }
+}</code></pre>
+
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Pole</th><th>Typ</th><th>Popis</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>steps</code></td><td>Array&lt;Step&gt;</td><td>Pipeline kroků pro získání odkazu.</td></tr>
+                        <tr><td><code>result</code></td><td>String</td><td>Template s proměnnou, která obsahuje finální stream URL. Typicky <code>"{{stream_url}}"</code>.</td></tr>
+                        <tr><td><code>headers</code></td><td>Object</td><td><span class="badge badge-optional">Ne</span> Extra HTTP hlavičky, které přehrávač pošle při streamování. Podporuje template proměnné. Typicky <code>Referer</code>, <code>User-Agent</code>, <code>Cookie</code> nebo <code>Authorization</code>.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>StreamUrl pipeline má automaticky k dispozici:</p>
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Proměnná</th><th>Hodnota</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>{{identifier}}</code></td><td>Identifikátor souboru ze search výsledků (hodnota z <code>link</code>/<code>url</code> v itemMapping).</td></tr>
+                        <tr><td><code>{{token}}</code></td><td>Autentizační token.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ========================= AKCE ========================= -->
+            <h2 id="akce-http">Akce: <code>http</code></h2>
+            <p>Provede HTTP požadavek. Nejdůležitější a nejčastěji používaná akce.</p>
+            <pre><code><span class="code-label">JSON</span>{
+  "action": "http",
+  "method": "POST",
+  "url": "https://api.example.com/endpoint",
+  "contentType": "application/x-www-form-urlencoded",
+  "body": "param1={{value1}}&param2={{value2}}",
+  "responseType": "xml",
+  "headers": {
+    "Authorization": "Bearer {{token}}",
+    "X-Custom": "value"
+  },
+  "outputs": {
+    "moje_promenna": "xml_tag_name"
+  }
+}</code></pre>
+
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Parametr</th><th>Typ</th><th>Výchozí</th><th>Popis</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>action</code></td><td>String</td><td>—</td><td>Musí být <code>"http"</code>.</td></tr>
+                        <tr><td><code>method</code></td><td>String</td><td><code>"GET"</code></td><td>HTTP metoda: <code>"GET"</code> nebo <code>"POST"</code>.</td></tr>
+                        <tr><td><code>url</code></td><td>String</td><td>—</td><td>URL endpointu. Podporuje <a href="#interpolace">interpolaci</a>.</td></tr>
+                        <tr><td><code>contentType</code></td><td>String</td><td>—</td><td>Hodnota hlavičky <code>Content-Type</code>.</td></tr>
+                        <tr><td><code>body</code></td><td>String</td><td>—</td><td>Tělo požadavku (pro POST). Podporuje interpolaci.</td></tr>
+                        <tr><td><code>responseType</code></td><td>String</td><td><code>"xml"</code></td><td>Formát odpovědi: <code>"xml"</code> nebo <code>"json"</code>. Ovlivňuje parsování <code>outputs</code>.</td></tr>
+                        <tr><td><code>headers</code></td><td>Object</td><td><code>{}</code></td><td>Vlastní HTTP hlavičky. Hodnoty podporují interpolaci.</td></tr>
+                        <tr><td><code>outputs</code></td><td>Object</td><td>—</td><td>Mapování: <code>{ "nazev_promenne": "cesta_v_odpovedi" }</code>. Viz <a href="#xml-parsing">XML</a> / <a href="#json-parsing">JSON parsing</a>.</td></tr>
+                        <tr><td><code>listElement</code></td><td>String</td><td>—</td><td><strong>Pouze v search:</strong> název elementu, který představuje jednu položku v seznamu.</td></tr>
+                        <tr><td><code>itemMapping</code></td><td>Object</td><td>—</td><td><strong>Pouze v search:</strong> mapování polí položky. Viz <a href="#seznam-vysledku">Seznam výsledků</a>.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout callout-warn">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Pokud HTTP krok vrátí jiný status než <code>200</code>, celá pipeline selže. Engine <strong>nepodporuje</strong> přesměrování ani jiné 2xx kódy.</p>
+            </div>
+
+            <!-- --- md5crypt --- -->
+            <h2 id="akce-md5crypt">Akce: <code>md5crypt</code></h2>
+            <p>Vypočítá Unix MD5-crypt hash (formát <code>$1$salt$hash</code>). Používá se typicky pro starší API, které vyžadují tento typ hashování hesel.</p>
+            <pre><code><span class="code-label">JSON</span>{
+  "action": "md5crypt",
+  "input": "{{password}}",
+  "salt": "{{salt}}",
+  "output": "crypted_password"
+}</code></pre>
+
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Parametr</th><th>Typ</th><th>Popis</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>input</code></td><td>String</td><td>Vstupní text (typicky heslo). Podporuje interpolaci.</td></tr>
+                        <tr><td><code>salt</code></td><td>String</td><td>Salt pro hashování. Podporuje interpolaci. Max 8 znaků.</td></tr>
+                        <tr><td><code>output</code></td><td>String</td><td>Název proměnné, do které se uloží výsledný hash.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p><strong>Příklad výstupu:</strong> <code>$1$abcdefgh$k4x3gHwmKj1vC0B.Xr5M/.</code></p>
+
+            <!-- --- sha1 --- -->
+            <h2 id="akce-sha1">Akce: <code>sha1</code></h2>
+            <p>Vypočítá SHA-1 hash vstupního textu.</p>
+            <pre><code><span class="code-label">JSON</span>{
+  "action": "sha1",
+  "input": "{{crypted_password}}",
+  "output": "hashed_password"
+}</code></pre>
+
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Parametr</th><th>Typ</th><th>Popis</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>input</code></td><td>String</td><td>Vstupní text. Podporuje interpolaci.</td></tr>
+                        <tr><td><code>output</code></td><td>String</td><td>Název proměnné pro hex-encoded výstup.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p><strong>Příklad výstupu:</strong> <code>a94a8fe5ccb19ba61c4c0873d391e987982fbbd3</code></p>
+
+            <!-- --- md5 --- -->
+            <h2 id="akce-md5">Akce: <code>md5</code></h2>
+            <p>Vypočítá MD5 hash vstupního textu.</p>
+            <pre><code><span class="code-label">JSON</span>{
+  "action": "md5",
+  "input": "{{some_value}}",
+  "output": "md5_hash"
+}</code></pre>
+
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Parametr</th><th>Typ</th><th>Popis</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>input</code></td><td>String</td><td>Vstupní text. Podporuje interpolaci.</td></tr>
+                        <tr><td><code>output</code></td><td>String</td><td>Název proměnné pro hex-encoded výstup.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p><strong>Příklad výstupu:</strong> <code>5d41402abc4b2a76b9719d911017c592</code></p>
+
+            <!-- --- assert --- -->
+            <h2 id="akce-assert">Akce: <code>assert</code></h2>
+            <p>Porovná hodnotu runtime proměnné s očekávanou hodnotou. Pokud se neshodují, pipeline <strong>selže</strong> a další kroky se neprovádí.</p>
+            <pre><code><span class="code-label">JSON</span>{
+  "action": "assert",
+  "variable": "login_status",
+  "equals": "OK"
+}</code></pre>
+
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Parametr</th><th>Typ</th><th>Popis</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>variable</code></td><td>String</td><td>Název runtime proměnné k ověření.</td></tr>
+                        <tr><td><code>equals</code></td><td>String</td><td>Očekávaná hodnota.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout callout-info">
+                <i class="fas fa-info-circle"></i>
+                <p>Assert je klíčový pro validaci odpovědí API. Umístěte ho bezprostředně za HTTP krok, abyste ověřili, že operace (přihlášení, vyhledávání) proběhla úspěšně.</p>
+            </div>
+
+            <!-- --- clear --- -->
+            <h2 id="akce-clear">Akce: <code>clear</code></h2>
+            <p>Odstraní runtime proměnné ze stavu enginu.</p>
+            <pre><code><span class="code-label">JSON</span>{
+  "action": "clear",
+  "variables": ["token", "salt", "crypted_password", "temp_value"]
+}</code></pre>
+
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Parametr</th><th>Typ</th><th>Popis</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>variables</code></td><td>Array&lt;String&gt;</td><td>Seznam názvů proměnných k odstranění.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p>Typicky se používá v <code>logout</code> pipeline pro vyčištění tokenů.</p>
+
+            <!-- --- regex --- -->
+            <h2 id="akce-regex">Akce: <code>regex</code></h2>
+            <p>Extrahuje text z hodnoty proměnné pomocí regulárního výrazu.</p>
+            <pre><code><span class="code-label">JSON</span>{
+  "action": "regex",
+  "input": "{{_response}}",
+  "pattern": "href=\"(https://[^\"]+\\.mp4)\"",
+  "group": 1,
+  "output": "video_url"
+}</code></pre>
+
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Parametr</th><th>Typ</th><th>Výchozí</th><th>Popis</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>input</code></td><td>String</td><td>—</td><td>Vstupní text. Podporuje interpolaci. Typicky <code>{{_response}}</code>.</td></tr>
+                        <tr><td><code>pattern</code></td><td>String</td><td>—</td><td>Regulární výraz (Dart/PCRE syntaxe).</td></tr>
+                        <tr><td><code>group</code></td><td>Integer</td><td><code>1</code></td><td>Číslo zachytávací skupiny k extrakci.</td></tr>
+                        <tr><td><code>output</code></td><td>String</td><td>—</td><td>Název proměnné pro extrahovanou hodnotu.</td></tr>
+                        <tr><td><code>optional</code></td><td>Boolean</td><td><code>false</code></td><td>Pokud <code>true</code>, selhání kroku nezpůsobí selhání celého pipeline — pokračuje se dalším krokem. Viz <a href="#optional-steps">Volitelné kroky</a>.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout callout-warn">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Pokud regex nenajde shodu a krok <strong>není</strong> označený jako <code>"optional": true</code>, pipeline selže. Ujistěte se, že vzor odpovídá formátu odpovědi, nebo použijte volitelné kroky s fallbackem.</p>
+            </div>
+
+            <h3 id="optional-steps">Volitelné kroky (<code>optional</code>)</h3>
+            <p>Jakýkoli krok v pipeline může být označen jako volitelný přidáním <code>"optional": true</code>. Pokud volitelný krok selže, pipeline pokračuje dalším krokem místo okamžitého ukončení.</p>
+            <p>U akce <code>regex</code> platí navíc: pokud je výstupní proměnná (<code>output</code>) již naplněná předchozím krokem, volitelný regex se přeskočí. To umožňuje řetězení fallbacků:</p>
+            <pre><code><span class="code-label">Příklad — fallback řetězení</span>{
+  "steps": [
+    { "action": "http", "method": "GET", "url": "https://api.example.com/{{identifier}}", "responseType": "json" },
+    {
+      "action": "regex",
+      "input": "{{_response}}",
+      "pattern": "\"name\":\\s*\"([^\"]+\\.mp4)\",\\s*\"source\":\\s*\"original\"",
+      "group": 1,
+      "output": "video_file",
+      "optional": true
+    },
+    {
+      "action": "regex",
+      "input": "{{_response}}",
+      "pattern": "\"name\":\\s*\"([^/\"]+\\.mp4)\"",
+      "group": 1,
+      "output": "video_file",
+      "optional": true
+    }
+  ],
+  "result": "https://example.com/download/{{identifier}}/{{video_file|urlencode}}"
+}</code></pre>
+            <p>V tomto příkladě se nejprve hledá MP4 soubor s <code>source: "original"</code>. Pokud není nalezen, druhý regex zkusí najít jakýkoli MP4. Pokud první regex uspěje, druhý se přeskočí (proměnná <code>video_file</code> je již nastavena).</p>
+
+            <div class="callout callout-info">
+                <i class="fas fa-info-circle"></i>
+                <p>Parametr <code>optional</code> lze použít u všech akcí (http, regex, assert, atd.), nejen u regex.</p>
+            </div>
+
+            <!-- --- set --- -->
+            <h2 id="akce-set">Akce: <code>set</code></h2>
+            <p>Přímo nastaví proměnnou na zadanou hodnotu. Užitečné pro sestavení složených hodnot z více proměnných nebo nastavení výchozí hodnoty.</p>
+            <pre><code><span class="code-label">JSON</span>{
+  "action": "set",
+  "output": "full_url",
+  "value": "https://cdn.example.com/{{path}}/{{filename|urlencode}}"
+}</code></pre>
+
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Parametr</th><th>Typ</th><th>Popis</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>output</code></td><td>String</td><td>Název proměnné, do které se uloží výsledek.</td></tr>
+                        <tr><td><code>value</code></td><td>String</td><td>Hodnota (podporuje interpolaci a filtry).</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- --- parallel --- -->
+            <h2 id="akce-parallel">Akce: <code>parallel</code></h2>
+            <p>Spustí více nezávislých kroků současně. Všechny vnořené kroky běží paralelně a výsledek je úspěšný, pokud všechny uspějí.</p>
+            <pre><code><span class="code-label">JSON</span>{
+  "action": "parallel",
+  "steps": [
+    {
+      "action": "http",
+      "method": "GET",
+      "url": "https://api.example.com/metadata/{{identifier}}",
+      "responseType": "json",
+      "outputs": { "meta_title": "title" }
+    },
+    {
+      "action": "http",
+      "method": "GET",
+      "url": "https://api.example.com/files/{{identifier}}",
+      "responseType": "json",
+      "outputs": { "file_url": "url" }
+    }
+  ]
+}</code></pre>
+
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Parametr</th><th>Typ</th><th>Popis</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>steps</code></td><td>Array&lt;Step&gt;</td><td>Seznam kroků ke spuštění paralelně. Každý krok je standardní definice akce.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout callout-warn">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Paralelní kroky by neměly záviset navzájem na svých výstupech. Pokud krok B potřebuje výstup kroku A, musí běžet sekvenčně (mimo <code>parallel</code>).</p>
+            </div>
+
+            <!-- ========================= TEMPLATE ENGINE ========================= -->
+            <h2 id="promenne">Proměnné</h2>
+            <p>Addon Engine udržuje runtime slovník proměnných (<code>Map&lt;String, String&gt;</code>). Proměnné se plní z:</p>
+            <ul>
+                <li><strong>Credentials</strong> – klíče z <code>auth.fields</code> (např. <code>username</code>, <code>password</code>, <code>api_key</code>)</li>
+                <li><strong>HTTP outputs</strong> – hodnoty extrahované z API odpovědí</li>
+                <li><strong>Crypto kroky</strong> – výstupy hashů (<code>md5crypt</code>, <code>sha1</code>, <code>md5</code>)</li>
+                <li><strong>Regex</strong> – extrahované podřetězce</li>
+                <li><strong>Automatické</strong> – <code>query</code>, <code>page</code>, <code>identifier</code></li>
+            </ul>
+
+            <h3 id="interpolace">Interpolace <code>{{proměnná}}</code></h3>
+            <p>Kde je v parametrech textová hodnota, lze použít interpolaci dvojitými složenými závorkami:</p>
+            <pre><code><span class="code-label">Příklad</span>"url": "https://api.example.com/search?q={{query}}&token={{token}}"
+"body": "username={{username}}&password={{hashed_password}}"
+"input": "{{crypted}}"</code></pre>
+            <p>Engine nahradí každý výskyt <code>{{nazev}}</code> aktuální hodnotou ze slovníku proměnných. Pokud proměnná neexistuje, nahradí se prázdným řetězcem.</p>
+
+            <h3 id="filtry">Filtry <code>{{proměnná|filtr}}</code></h3>
+            <p>Za název proměnné lze přidat filtr oddělený svislítkem (<code>|</code>), který transformuje hodnotu před vložením:</p>
+            <pre><code><span class="code-label">Příklad</span>"url": "https://api.example.com/search?q={{query|urlencode}}"
+"body": "token={{token|base64}}"
+"header": "{{api_key|uppercase}}"</code></pre>
+
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Filtr</th><th>Popis</th><th>Příklad vstupu → výstupu</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>urlencode</code></td><td>URL-enkódování (percent-encoding). <strong>Doporučeno</strong> pro <code>{{query}}</code> v URL.</td><td><code>Český film</code> → <code>%C4%8Cesk%C3%BD%20film</code></td></tr>
+                        <tr><td><code>base64</code></td><td>Base64 enkódování.</td><td><code>hello</code> → <code>aGVsbG8=</code></td></tr>
+                        <tr><td><code>lowercase</code></td><td>Převod na malá písmena.</td><td><code>HELLO</code> → <code>hello</code></td></tr>
+                        <tr><td><code>uppercase</code></td><td>Převod na velká písmena.</td><td><code>hello</code> → <code>HELLO</code></td></tr>
+                        <tr><td><code>trim</code></td><td>Odstraň bílé znaky na začátku a konci.</td><td><code> hello </code> → <code>hello</code></td></tr>
+                        <tr><td><code>htmldecode</code></td><td>Dekoduje HTML entity.</td><td><code>&amp;amp; &amp;lt;</code> → <code>&amp; &lt;</code></td></tr>
+                        <tr><td><code>length</code></td><td>Délka řetězce (výstup je číslo).</td><td><code>hello</code> → <code>5</code></td></tr>
+                        <tr><td><code>reverse</code></td><td>Obrátí znaky v řetězci.</td><td><code>hello</code> → <code>olleh</code></td></tr>
+                        <tr><td><code>timestamp</code></td><td>Vrátí aktuální Unix timestamp v sekundách (ignoruje hodnotu proměnné).</td><td>→ <code>1741700000</code></td></tr>
+                        <tr><td><code>timestamp_ms</code></td><td>Vrátí aktuální Unix timestamp v milisekundách.</td><td>→ <code>1741700000000</code></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout callout-warn">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Pokud filtr není rozpoznán, hodnota se vloží bez transformace.</p>
+            </div>
+
+            <h3 id="specialni-promenne">Speciální proměnné</h3>
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Proměnná</th><th>Automaticky dostupná</th><th>Popis</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>_response</code></td><td>Po každém HTTP kroku</td><td>Celé tělo poslední HTTP odpovědi (raw text). Užitečné pro <code>regex</code> akci.</td></tr>
+                        <tr><td><code>_http_status</code></td><td>Po neúspěšném HTTP kroku</td><td>HTTP stavový kód posledního neúspěšného požadavku (např. <code>403</code>, <code>500</code>). Užitečné pro diagnostiku.</td></tr>
+                        <tr><td><code>query</code></td><td>V search pipeline</td><td>Text, který uživatel hledá.</td></tr>
+                        <tr><td><code>page</code></td><td>V search pipeline</td><td>Číslo stránky (1, 2, 3...).</td></tr>
+                        <tr><td><code>identifier</code></td><td>V streamUrl pipeline</td><td>Identifikátor vybraného souboru (z itemMapping <code>link</code>/<code>url</code>).</td></tr>
+                        <tr><td><code>token</code></td><td>Po login pipeline</td><td>Autentizační token. Doporučený název pro výstup z login kroků.</td></tr>
+                        <tr><td><code>{{timestamp}}</code></td><td>Vždy</td><td>Aktuální Unix timestamp v sekundách. Lze použít přímo bez proměnné.</td></tr>
+                        <tr><td><code>{{timestamp_ms}}</code></td><td>Vždy</td><td>Aktuální Unix timestamp v milisekundách.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ========================= PARSOVÁNÍ ========================= -->
+            <h2 id="xml-parsing">XML parsing</h2>
+            <p>Při <code>"responseType": "xml"</code> engine extrahuje hodnoty pomocí názvů XML tagů.</p>
+            <pre><code><span class="code-label">XML odpověď</span>&lt;response&gt;
+  &lt;status&gt;OK&lt;/status&gt;
+  &lt;token&gt;abc123xyz&lt;/token&gt;
+  &lt;user_id&gt;42&lt;/user_id&gt;
+&lt;/response&gt;</code></pre>
+            <pre><code><span class="code-label">outputs</span>"outputs": {
+  "status_var": "status",
+  "token": "token",
+  "uid": "user_id"
+}</code></pre>
+            <p>Výsledek: <code>status_var = "OK"</code>, <code>token = "abc123xyz"</code>, <code>uid = "42"</code></p>
+
+            <div class="callout callout-info">
+                <i class="fas fa-info-circle"></i>
+                <p>XML parser podporuje tagy s atributy – např. <code>&lt;file id="123"&gt;...&lt;/file&gt;</code> bude nalezeno při hledání tagu <code>file</code>. Pro extrakci atributů použijte notáci <code>tag@attr</code> v mappingu (viz níže).</p>
+            </div>
+            <p>Pro extrakci atributů z XML tagů použijte notáci <code>tag@atribut</code>:</p>
+            <pre><code><span class="code-label">XML s atributy</span>&lt;files&gt;
+  &lt;file id="abc123" type="video"&gt;Film.mp4&lt;/file&gt;
+  &lt;file id="def456" type="subtitle"&gt;Film.srt&lt;/file&gt;
+&lt;/files&gt;</code></pre>
+            <pre><code><span class="code-label">itemMapping</span>"itemMapping": {
+  "title": "file",
+  "link": "file@id",
+  "type": "file@type"
+}</code></pre>
+            <p>Výsledek: <code>link = "abc123"</code>, <code>type = "video"</code>. Notáce <code>@attr</code> (bez tagu) extrahuje atribut z rodičovského elementu.</p>
+
+            <h2 id="json-parsing">JSON parsing</h2>
+            <p>Při <code>"responseType": "json"</code> engine používá tečkovou notaci pro navigaci v JSON struktuře.</p>
+            <pre><code><span class="code-label">JSON odpověď</span>{
+  "status": "ok",
+  "data": {
+    "token": "xyz789",
+    "user": {
+      "id": 42,
+      "name": "Jan"
+    }
+  }
+}</code></pre>
+            <pre><code><span class="code-label">outputs</span>"outputs": {
+  "my_token": "data.token",
+  "user_name": "data.user.name",
+  "user_id": "data.user.id"
+}</code></pre>
+            <p>Výsledek: <code>my_token = "xyz789"</code>, <code>user_name = "Jan"</code>, <code>user_id = "42"</code></p>
+
+            <p>Pro přístup k prvkům pole použijte číselný index nebo hranatou notaci:</p>
+            <pre><code><span class="code-label">JSON cesta s polem</span>"outputs": {
+  "first_item": "results[0].name",
+  "first_item_alt": "results.0.name"
+}</code></pre>
+
+            <p>Pro filtrování pole podle hodnoty klíče použijte <code>[?(@.key=='value')]</code>:</p>
+            <pre><code><span class="code-label">JSON cesta s filtrem</span>"outputs": {
+  "video_file": "files[?(@.source=='original')].name"
+}</code></pre>
+            <p>Filtr projde pole <code>files</code> a vrátí první prvek, kde <code>source</code> je <code>"original"</code>, pak z něj extrahuje <code>name</code>.</p>
+
+            <div class="callout callout-info">
+                <i class="fas fa-info-circle"></i>
+                <p>V itemMapping search kroků lze rovněž použít vnořené cesty: <code>"title": "metadata.title"</code> nebo <code>"id": "files[0].id"</code>.</p>
+            </div>
+
+            <h2 id="seznam-vysledku">Seznam výsledků (List parsing)</h2>
+            <p>Pro search pipeline musí HTTP krok s <code>listElement</code> identifikovat opakující se prvky v odpovědi:</p>
+
+            <h4>XML seznam</h4>
+            <pre><code><span class="code-label">XML odpověď</span>&lt;response&gt;
+  &lt;status&gt;OK&lt;/status&gt;
+  &lt;file&gt;
+    &lt;name&gt;Film.2024.CZ.mkv&lt;/name&gt;
+    &lt;size&gt;1536000000&lt;/size&gt;
+    &lt;ident&gt;abc123&lt;/ident&gt;
+  &lt;/file&gt;
+  &lt;file&gt;
+    &lt;name&gt;Film.2024.EN.mp4&lt;/name&gt;
+    &lt;size&gt;987000000&lt;/size&gt;
+    &lt;ident&gt;def456&lt;/ident&gt;
+  &lt;/file&gt;
+&lt;/response&gt;</code></pre>
+            <pre><code><span class="code-label">Search krok</span>{
+  "action": "http",
+  "method": "POST",
+  "url": "https://api.example.com/search",
+  "body": "q={{query}}&token={{token}}",
+  "responseType": "xml",
+  "listElement": "file",
+  "itemMapping": {
+    "title": "name",
+    "size": "size",
+    "link": "ident"
+  }
+}</code></pre>
+            <p>Engine najde všechny <code>&lt;file&gt;...&lt;/file&gt;</code> bloky a z každého extrahuje <code>name</code>, <code>size</code>, <code>ident</code> podle mappingu.</p>
+
+            <h4>JSON seznam</h4>
+            <pre><code><span class="code-label">JSON odpověď</span>{
+  "status": "ok",
+  "results": [
+    { "title": "Film.2024.CZ.mkv", "filesize": 1536000000, "id": "abc123" },
+    { "title": "Film.2024.EN.mp4", "filesize": 987000000, "id": "def456" }
+  ]
+}</code></pre>
+            <pre><code><span class="code-label">Search krok</span>{
+  "action": "http",
+  "method": "GET",
+  "url": "https://api.example.com/search?q={{query|urlencode}}",
+  "responseType": "json",
+  "listElement": "results",
+  "itemMapping": {
+    "title": "title",
+    "size": "filesize",
+    "link": "id"
+  }
+}</code></pre>
+            <p><code>listElement</code> u JSON odpovědi je cesta (tečková notace) k poli objektů. U každého objektu se klíče z <code>itemMapping</code> použijí k nalezení příslušné hodnoty.</p>
+
+            <!-- ========================= PŘÍKLADY ========================= -->
+            <h2 id="priklad-kompletni">Příklad: Kompletní addon s autentizací</h2>
+            <p>Ukázkový addon pro fiktivní službu „CloudStorage.cz" s plným auth flow (salt + md5crypt + sha1):</p>
+            <pre><code><span class="code-label">cloudstorage.json</span>{
+  "manifest": {
+    "id": "cloudstorage",
+    "name": "CloudStorage.cz",
+    "version": "1.0.0",
+    "description": "Demo addon pro CloudStorage.cz.",
+    "author": "Komunita",
+    "type": "api",
+    "capabilities": ["search", "auth", "directStream"],
+    "homeUrl": "https://cloudstorage.cz"
+  },
+  "auth": {
+    "type": "credentials",
+    "fields": [
+      {
+        "key": "username",
+        "label": "Uživatelské jméno",
+        "hint": "Váš e-mail nebo přezdívka",
+        "isSecret": false,
+        "required": true
+      },
+      {
+        "key": "password",
+        "label": "Heslo",
+        "hint": "Zadejte heslo k účtu",
+        "isSecret": true,
+        "required": true
+      }
+    ],
+    "login": [
+      {
+        "action": "http",
+        "method": "POST",
+        "url": "https://cloudstorage.cz/api/salt/",
+        "contentType": "application/x-www-form-urlencoded",
+        "body": "username={{username}}",
+        "responseType": "xml",
+        "outputs": {
+          "salt": "salt",
+          "salt_status": "status"
+        }
+      },
+      {
+        "action": "assert",
+        "variable": "salt_status",
+        "equals": "OK"
+      },
+      {
+        "action": "md5crypt",
+        "input": "{{password}}",
+        "salt": "{{salt}}",
+        "output": "crypted"
+      },
+      {
+        "action": "sha1",
+        "input": "{{crypted}}",
+        "output": "hashed_password"
+      },
+      {
+        "action": "http",
+        "method": "POST",
+        "url": "https://cloudstorage.cz/api/login/",
+        "contentType": "application/x-www-form-urlencoded",
+        "body": "username={{username}}&password={{hashed_password}}&keep_logged_in=1",
+        "responseType": "xml",
+        "outputs": {
+          "token": "token",
+          "login_status": "status"
+        }
+      },
+      {
+        "action": "assert",
+        "variable": "login_status",
+        "equals": "OK"
+      }
+    ],
+    "check": [
+      {
+        "action": "http",
+        "method": "POST",
+        "url": "https://cloudstorage.cz/api/user_data/",
+        "contentType": "application/x-www-form-urlencoded",
+        "body": "token={{token}}",
+        "responseType": "xml",
+        "outputs": {
+          "check_status": "status"
+        }
+      },
+      {
+        "action": "assert",
+        "variable": "check_status",
+        "equals": "OK"
+      }
+    ],
+    "logout": [
+      {
+        "action": "clear",
+        "variables": ["token", "salt", "crypted", "hashed_password"]
+      }
+    ]
+  },
+  "search": {
+    "steps": [
+      {
+        "action": "http",
+        "method": "POST",
+        "url": "https://cloudstorage.cz/api/search/",
+        "contentType": "application/x-www-form-urlencoded",
+        "body": "what={{query}}&sort=largest&limit=100&category=video&token={{token}}",
+        "responseType": "xml",
+        "listElement": "file",
+        "itemMapping": {
+          "title": "name",
+          "size": "size",
+          "link": "ident"
+        }
+      }
+    ]
+  },
+  "streamUrl": {
+    "steps": [
+      {
+        "action": "http",
+        "method": "POST",
+        "url": "https://cloudstorage.cz/api/file_link/",
+        "contentType": "application/x-www-form-urlencoded",
+        "body": "ident={{identifier}}&download_type=video_stream&token={{token}}",
+        "responseType": "xml",
+        "outputs": {
+          "stream_url": "link"
+        }
+      }
+    ],
+    "result": "{{stream_url}}"
+  }
+}</code></pre>
+
+            <h2 id="priklad-bez-auth">Příklad: Addon bez autentizace</h2>
+            <p>Jednoduchý addon pro veřejné API, které nevyžaduje přihlášení:</p>
+            <pre><code><span class="code-label">public-api.json</span>{
+  "manifest": {
+    "id": "public-videos",
+    "name": "Public Videos API",
+    "version": "1.0.0",
+    "description": "Veřejné API pro vyhledávání videí.",
+    "author": "Komunita",
+    "type": "api",
+    "capabilities": ["search", "directStream"]
+  },
+  "search": {
+    "steps": [
+      {
+        "action": "http",
+        "method": "GET",
+        "url": "https://public-api.example.com/videos?search={{query|urlencode}}&page={{page}}",
+        "responseType": "json",
+        "listElement": "data.videos",
+        "itemMapping": {
+          "title": "filename",
+          "size": "bytes",
+          "link": "video_id"
+        }
+      }
+    ]
+  },
+  "streamUrl": {
+    "steps": [
+      {
+        "action": "http",
+        "method": "GET",
+        "url": "https://public-api.example.com/videos/{{identifier}}/stream",
+        "responseType": "json",
+        "outputs": {
+          "stream_url": "url"
+        }
+      }
+    ],
+    "result": "{{stream_url}}"
+  }
+}</code></pre>
+
+            <div class="callout callout-info">
+                <i class="fas fa-lightbulb"></i>
+                <p>Pokud addon nevyžaduje autentizaci, sekce <code>auth</code> může zcela chybět – nebo nastavte <code>"type": "none"</code>.</p>
+            </div>
+
+            <h2 id="priklad-json-api">Příklad: JSON API s vnořenou strukturou</h2>
+            <p>Addon, který pracuje s REST JSON API a používá vnořené JSON cesty:</p>
+            <pre><code><span class="code-label">nested-json.json</span>{
+  "manifest": {
+    "id": "nested-api",
+    "name": "Nested JSON API",
+    "version": "1.0.0",
+    "description": "Příklad práce s vnořeným JSON.",
+    "author": "Komunita",
+    "type": "api",
+    "capabilities": ["search", "auth", "directStream"]
+  },
+  "auth": {
+    "type": "token",
+    "fields": [
+      {
+        "key": "api_key",
+        "label": "API klíč",
+        "hint": "Vložte váš API klíč",
+        "isSecret": true,
+        "required": true
+      }
+    ],
+    "login": [
+      {
+        "action": "http",
+        "method": "POST",
+        "url": "https://api.example.com/v2/auth",
+        "contentType": "application/json",
+        "body": "{\"api_key\": \"{{api_key}}\"}",
+        "responseType": "json",
+        "outputs": {
+          "token": "data.session.token",
+          "auth_status": "status"
+        }
+      },
+      {
+        "action": "assert",
+        "variable": "auth_status",
+        "equals": "ok"
+      }
+    ]
+  },
+  "search": {
+    "steps": [
+      {
+        "action": "http",
+        "method": "GET",
+        "url": "https://api.example.com/v2/files?q={{query|urlencode}}&page={{page}}",
+        "responseType": "json",
+        "headers": {
+          "Authorization": "Bearer {{token}}"
+        },
+        "listElement": "data.files",
+        "itemMapping": {
+          "title": "name",
+          "size": "size_bytes",
+          "link": "file_id"
+        }
+      }
+    ]
+  },
+  "streamUrl": {
+    "steps": [
+      {
+        "action": "http",
+        "method": "GET",
+        "url": "https://api.example.com/v2/files/{{identifier}}/download",
+        "responseType": "json",
+        "headers": {
+          "Authorization": "Bearer {{token}}"
+        },
+        "outputs": {
+          "stream_url": "data.download_url"
+        }
+      }
+    ],
+    "result": "{{stream_url}}"
+  }
+}</code></pre>
+
+            <h2 id="priklad-token">Příklad: Token-based auth s regexem</h2>
+            <p>Addon, který extrahuje token z HTML odpovědi pomocí regexu:</p>
+            <pre><code><span class="code-label">scraper-addon.json</span>{
+  "manifest": {
+    "id": "my-scraper",
+    "name": "My Scraper",
+    "version": "1.0.0",
+    "description": "Ukázkový scraper addon s regex extrakcí.",
+    "author": "Komunita",
+    "type": "scraper",
+    "capabilities": ["search", "auth", "directStream"]
+  },
+  "auth": {
+    "type": "credentials",
+    "fields": [
+      {
+        "key": "email",
+        "label": "E-mail",
+        "isSecret": false,
+        "required": true
+      },
+      {
+        "key": "password",
+        "label": "Heslo",
+        "isSecret": true,
+        "required": true
+      }
+    ],
+    "login": [
+      {
+        "action": "http",
+        "method": "POST",
+        "url": "https://example.com/login",
+        "contentType": "application/x-www-form-urlencoded",
+        "body": "email={{email}}&password={{password}}",
+        "responseType": "xml"
+      },
+      {
+        "action": "regex",
+        "input": "{{_response}}",
+        "pattern": "session_token[\"']?\\s*[:=]\\s*[\"']([a-f0-9]{32})[\"']",
+        "group": 1,
+        "output": "token"
+      }
+    ]
+  },
+  "search": {
+    "steps": [
+      {
+        "action": "http",
+        "method": "GET",
+        "url": "https://example.com/search?q={{query|urlencode}}",
+        "responseType": "xml",
+        "headers": {
+          "Cookie": "session={{token}}"
+        }
+      },
+      {
+        "action": "regex",
+        "input": "{{_response}}",
+        "pattern": "data-results='(\\[.*?\\])'",
+        "group": 1,
+        "output": "json_results"
+      },
+      {
+        "action": "http",
+        "method": "GET",
+        "url": "https://example.com/api/parse-results",
+        "responseType": "json",
+        "headers": {
+          "X-Data": "{{json_results}}"
+        },
+        "listElement": "items",
+        "itemMapping": {
+          "title": "name",
+          "size": "size",
+          "link": "url"
+        }
+      }
+    ]
+  },
+  "streamUrl": {
+    "steps": [
+      {
+        "action": "http",
+        "method": "GET",
+        "url": "{{identifier}}",
+        "responseType": "xml",
+        "headers": {
+          "Cookie": "session={{token}}"
+        }
+      },
+      {
+        "action": "regex",
+        "input": "{{_response}}",
+        "pattern": "source\\s+src=[\"'](https://[^\"']+\\.mp4)[\"']",
+        "group": 1,
+        "output": "stream_url"
+      }
+    ],
+    "result": "{{stream_url}}"
+  }
+}</code></pre>
+
+            <!-- ========================= REFERENCE ========================= -->
+            <h2 id="capabilities">Capabilities (schopnosti)</h2>
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Hodnota</th><th>Popis</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>"search"</code></td><td>Addon umí vyhledávat soubory. <strong>Povinné</strong> – každý addon musí umět vyhledávat.</td></tr>
+                        <tr><td><code>"auth"</code></td><td>Addon vyžaduje autentizaci (přihlášení).</td></tr>
+                        <tr><td><code>"directStream"</code></td><td>Addon poskytuje přímé streamovací odkazy (ne redirect).</td></tr>
+                        <tr><td><code>"subtitles"</code></td><td>Addon podporuje titulky (rezervováno pro budoucí použití).</td></tr>
+                        <tr><td><code>"download"</code></td><td>Addon podporuje stahování souborů (rezervováno pro budoucí použití).</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2 id="addon-types">Addon Types (typy)</h2>
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Hodnota</th><th>Popis</th></tr></thead>
+                    <tbody>
+                        <tr><td><code>"api"</code></td><td>Data jsou získávána přes strukturované API (REST, XML-RPC, GraphQL...).</td></tr>
+                        <tr><td><code>"scraper"</code></td><td>Data jsou získávána parsováním HTML stránek (pomocí regexu).</td></tr>
+                        <tr><td><code>"hybrid"</code></td><td>Kombinace obojího – některé endpointy jsou API, některé vyžadují scraping.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="callout callout-info">
+                <i class="fas fa-info-circle"></i>
+                <p>Typ addonu je informativní metadata – nemá vliv na chování enginu. Engine vykonává kroky stejně bez ohledu na typ.</p>
+            </div>
+
+            <h2 id="chybove-stavy">Chybové stavy</h2>
+            <p>Engine může selhat v několika situacích:</p>
+            <div class="docs-table-wrapper">
+                <table>
+                    <thead><tr><th>Situace</th><th>Co se stane</th></tr></thead>
+                    <tbody>
+                        <tr><td>HTTP krok vrátí jiný status než 200</td><td>Pipeline se zastaví, krok vrátí <code>false</code>.</td></tr>
+                        <tr><td>Assert selže (hodnota != expected)</td><td>Pipeline se zastaví, celý flow vrátí <code>false</code>.</td></tr>
+                        <tr><td>Regex nenajde shodu</td><td>Pipeline se zastaví, krok vrátí <code>false</code>.</td></tr>
+                        <tr><td>Neznámá akce</td><td>Pipeline se zastaví, vypíše se warning do konzole.</td></tr>
+                        <tr><td>Timeout HTTP požadavku</td><td>Engine zachytí výjimku, krok vrátí <code>false</code>.</td></tr>
+                        <tr><td>Neplatný JSON soubor</td><td>Import selže, zobrazí se chybová hláška.</td></tr>
+                        <tr><td>Duplicitní addon ID</td><td>Import je odmítnut s upozorněním.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2 id="omezeni">Omezení a limity</h2>
+            <ul>
+                <li><strong>Pouze HTTP GET a POST</strong> – jiné metody (PUT, DELETE, PATCH) nejsou podporovány.</li>
+                <li><strong>Žádný JavaScript</strong> – addon nemůže spouštět JS kód (na rozdíl od browser pluginů).</li>
+                <li><strong>XML jmenné prostory</strong> – parser podporuje tagy s atributy, ale nepodporuje XML namespaces (např. <code>ns:tag</code>).</li>
+                <li><strong>JSONPath bez wildcards</strong> – nelze použít <code>data.*.name</code>. Podporovány jsou indexy <code>[0]</code> a filtry <code>[?(@.key=='val')]</code>.</li>
+                <li><strong>MD5-crypt salt max 8 znaků</strong> – delší salty jsou oříznuty.</li>
+                <li><strong>Žádné cookies</strong> – engine automaticky nespravuje cookies. Tokeny je nutné předávat explicitně.</li>
+                <li><strong>Žádné přesměrování</strong> – HTTP klient nesleduje 3xx redirecty automaticky v kontextu parsování odpovědí.</li>
+                <li><strong>Proměnné jsou string only</strong> – všechny runtime hodnoty jsou řetězce, žádné číselné operace.</li>
+                <li><strong>Jedna search stránka = jeden HTTP krok s listElement</strong> – nelze kombinovat výsledky z více volání v jedné pipeline (ale lze použít <code>parallel</code> pro nezávislá volání).</li>
+            </ul>
+
+            <h2 id="pravni-upozorneni">Právní upozornění</h2>
+            <div class="callout callout-danger">
+                <i class="fas fa-gavel"></i>
+                <p>
+                    <strong>Aplikace StreamujTo neobsahuje žádný obsah ani přístup k jakémukoli úložišti.</strong> 
+                    Veškerá funkcionalita úložišť je zajištěna výhradně doplňky, které si uživatel importuje na vlastní odpovědnost. 
+                    Vývojář aplikace neposkytuje, neschvaluje ani nekontroluje žádné doplňky.
+                </p>
+            </div>
+            <div class="callout callout-danger">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>
+                    <strong>Instalací jakéhokoli doplňku přebíráte plnou odpovědnost za jeho použití.</strong> 
+                    Ujistěte se, že dodržujete platné zákony vaší země, zejména v oblasti autorských práv. 
+                    Vývojář nenese žádnou zodpovědnost za obsah zpřístupněný prostřednictvím doplňků třetích stran.
+                </p>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // Sidebar active link tracking
+        const sections = document.querySelectorAll('.docs-content h2[id], .docs-content h3[id]');
+        const sidebarLinks = document.querySelectorAll('.docs-sidebar a');
+
+        function updateActive() {
+            let current = '';
+            for (const section of sections) {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 120) current = section.id;
+            }
+            sidebarLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+            });
+        }
+
+        window.addEventListener('scroll', updateActive, { passive: true });
+        updateActive();
+
+        // Smooth scroll for sidebar links
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    history.replaceState(null, '', link.getAttribute('href'));
+                }
+            });
+        });
+    </script>
+
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">Domů</a>
+            <a href="download.html">Ke stažení</a>
+            <a href="faq.html">Časté dotazy</a>
+            <a href="addon-docs.html">Addon Dokumentace</a>
+            <a href="disclaimer.html">Právní doložka</a>
+            <a href="https://discord.com/invite/N7xasCqzh6" target="_blank">Discord</a>
+        </div>
+        <div class="copyright">
+            &copy; 2026 StreamujTo. Všechna práva vyhrazena. <br>
+            StreamujTo je katalog a přehrávač — nehostuje ani nedistribuuje žádný obsah.
+        </div>
+    </footer>
+
+</body>
+</html>

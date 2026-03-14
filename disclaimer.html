@@ -19,66 +19,246 @@
             <ul>
                 <li><a href="index.html#features">Funkce</a></li>
                 <li><a href="faq.html">FAQ</a></li>
-                <li><a href="index.html#gallery">Galerie</a></li>
-                <li><a href="disclaimer.html" style="color: var(--primary)">Právní info</a></li>
+                <li><a href="addon-docs.html">Addon Docs</a></li>
             </ul>
         </nav>
         <a href="download.html" class="btn-download">Stáhnout</a>
     </header>
 
     <main class="legal-content">
-        <h1>Právní doložka a vyloučení odpovědnosti</h1>
+        <h1>Právní doložka, podmínky užívání a ochrana osobních údajů</h1>
         
-        <p><strong>Poslední aktualizace: 9. března 2026</strong></p>
+        <p><strong>Poslední aktualizace: 11. března 2026</strong></p>
+        <p style="color: var(--on-surface-variant); font-size: 0.9rem;">
+            Používáním aplikace StreamujTo (dále jen „Aplikace") souhlasíte s níže uvedenými podmínkami.
+            Pokud s nimi nesouhlasíte, Aplikaci neinstalujte ani nepoužívejte.
+        </p>
+
+        <hr style="border-color: rgba(255,255,255,0.08); margin: 2rem 0;">
+
+        <!-- ===================== -->
+        <!-- TOS -->
+        <!-- ===================== -->
+        <h2 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem;">Podmínky užívání (Terms of Service)</h2>
 
         <section>
             <h2>1. Povaha aplikace</h2>
-            <p>StreamujTo (dále jen "Aplikace") je softwarový nástroj, který slouží jako inteligentní vyhledávač, filtr a indexační rozhraní pro multimediální obsah. Aplikace sama o sobě neobsahuje, nehostuje, nenabízí ani nešíří žádný audiovizuální obsah (filmy, seriály, hudbu apod.).</p>
-        </section>
-
-        <section>
-            <h2>2. Odpovědnost za obsah, doplňky a vyhledávání</h2>
-            <p>Funkce vyhledávání v Aplikaci využívá veřejně dostupná metadata (např. z TMDb) pro zobrazení informací o filmech a seriálech. Samotné nalezení souborů a jejich přehrávání probíhá výhradně prostřednictvím doplňků (Addonů) a zdrojů, které si do aplikace sám přidá uživatel.</p>
-            <p>Vývojáři Aplikace nespravují ani neposkytují vyhledávací indexy pro nelegální obsah. Uživatel nese plnou právní odpovědnost za doplňky a konfigurace, které si do Aplikace nainstaluje a pomocí kterých vyhledává a přehrává soubory.</p>
-        </section>
-
-        <section>
-            <h2>3. Autorská práva a legálnost</h2>
-            <p>Autoři Aplikace plně respektují autorská práva. Aplikace nevyužívá žádné techniky k obcházení ochran autorských práv. Aplikace je určena k přehrávání legálně nabytého obsahu z úložišť, ke kterým má uživatel oprávněný přístup (např. vlastní NAS, lokální soubory nebo placené cloudové služby).</p>
-        </section>
-
-        <section>
-            <h2>4. Vyloučení odpovědnosti</h2>
-            <p>Užívání Aplikace je na vlastní nebezpečí uživatele. Vývojáři nenesou odpovědnost za:</p>
+            <p>StreamujTo je softwarový nástroj, který slouží jako:</p>
             <ul>
-                <li>Jakékoli přímé či nepřímé škody vzniklé používáním Aplikace.</li>
-                <li>Porušení místních zákonů uživatelem při používání Aplikace.</li>
-                <li>Ztrátu dat nebo poškození zařízení uživatele.</li>
-                <li>Případné výpadky služeb třetích stran.</li>
+                <li><strong>Vyhledávač metadat</strong> – zobrazuje informace o filmech a seriálech z veřejných databází (TMDb, Trakt.tv).</li>
+                <li><strong>Indexační rozhraní</strong> – umožňuje uživateli připojit vlastní zdroje obsahu prostřednictvím externích doplňků (Addonů) nebo lokálního úložiště.</li>
+                <li><strong>Multimediální přehrávač</strong> – přehrává streamy ze zdrojů, které si uživatel konfiguruje sám.</li>
+            </ul>
+            <p>Aplikace sama o sobě <strong>neobsahuje, nehostuje, nenabízí, nešíří ani neposkytuje přístup</strong> k žádnému audiovizuálnímu obsahu (filmy, seriály, hudba apod.).</p>
+        </section>
+
+        <section>
+            <h2>2. Modulární addon systém</h2>
+            <p>Aplikace disponuje generickým engine pro zpracování externích doplňků (JSON definic). Důležité body:</p>
+            <ul>
+                <li>Aplikace v <strong>základní instalaci neobsahuje žádný doplněk ani zdroj streamů</strong>.</li>
+                <li>Doplňky si uživatel importuje <strong>zcela dobrovolně, na vlastní odpovědnost a vlastní riziko</strong>.</li>
+                <li>Vývojář Aplikace <strong>neposkytuje, neschvaluje, nekontroluje ani nedistribuuje</strong> žádné doplňky.</li>
+                <li>Vývojář nenese <strong>žádnou odpovědnost</strong> za obsah, funkčnost, bezpečnost ani legálnost doplňků třetích stran.</li>
+                <li>Komunitní repozitář doplňků (pokud existuje) je spravován komunitou a vývojář Aplikace za něj neodpovídá.</li>
             </ul>
         </section>
 
         <section>
-            <h2>5. Externí API a služby</h2>
-            <p>Aplikace využívá API služeb TMDb (The Movie Database) pro metadata a Trakt.tv pro synchronizaci historie. Aplikace není těmito službami sponzorována ani certifikována. Uživatel je povinen dodržovat podmínky užití i těchto externích služeb.</p>
+            <h2>3. Lokální úložiště</h2>
+            <p>Aplikace umožňuje prohledávat video soubory uložené lokálně na zařízení uživatele. Tato funkce:</p>
+            <ul>
+                <li>Je ve výchozím stavu <strong>vypnuta</strong>.</li>
+                <li>Pracuje <strong>výhradně s lokálním souborovým systémem</strong> zařízení.</li>
+                <li>Žádná data o lokálních souborech nejsou odesílána na žádné servery.</li>
+            </ul>
         </section>
 
         <section>
-            <h2>6. Souhlas s podmínkami</h2>
-            <p>Stažením, instalací nebo používáním Aplikace uživatel vyjadřuje bezvýhradný souhlas s touto právní doložkou. Pokud s těmito podmínkami nesouhlasíte, Aplikaci nepoužívejte a okamžitě ji odstraňte ze svého zařízení.</p>
+            <h2>4. Oprávněné použití</h2>
+            <p>Aplikace je určena výhradně k:</p>
+            <ul>
+                <li>Přehrávání <strong>legálně nabytého obsahu</strong> z úložišť, ke kterým má uživatel oprávněný přístup (vlastní NAS, lokální soubory, placené cloudové služby).</li>
+                <li>Osobnímu a nekomerčnímu využití.</li>
+                <li>Vzdělávacím účelům v oblasti multimédií a softwarového vývoje.</li>
+            </ul>
+            <p>Uživatel se zavazuje, že <strong>nebude</strong> Aplikaci využívat k:</p>
+            <ul>
+                <li>Přístupu k obsahu chráněnému autorským právem, ke kterému nemá oprávnění.</li>
+                <li>Obcházení jakýchkoli technických ochranných opatření (DRM).</li>
+                <li>Šíření, redistribuci nebo zpřístupňování nelegálního obsahu.</li>
+                <li>Jakékoli komerční činnosti bez písemného souhlasu vývojáře.</li>
+            </ul>
         </section>
+
+        <section>
+            <h2>5. Autorská práva a duševní vlastnictví</h2>
+            <p>Vývojář Aplikace plně respektuje autorská práva a práva duševního vlastnictví třetích stran.</p>
+            <ul>
+                <li>Aplikace <strong>neobchází</strong> žádné ochranné mechanismy (DRM, šifrování, geo-blokaci).</li>
+                <li>Aplikace <strong>neindexuje ani neprohledává</strong> nelegální zdroje obsahu.</li>
+                <li>Veškeré obrázky, popisy a metadata filmů pocházejí z veřejně dostupných API (TMDb) a podléhají jejich licenčním podmínkám.</li>
+                <li>Pokud se domníváte, že Aplikace porušuje vaše autorská práva, kontaktujte nás na <a href="mailto:mail@lukymas.eu.org" style="color: var(--primary)">mail@lukymas.eu.org</a>.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>6. Vyloučení odpovědnosti (Disclaimer)</h2>
+            <p>Aplikace je poskytována <strong>„tak jak je" (as-is)</strong>, bez jakýchkoli záruk, výslovných či předpokládaných.</p>
+            <p>Vývojář neodpovídá za:</p>
+            <ul>
+                <li>Jakékoli přímé, nepřímé, náhodné, zvláštní nebo následné škody vzniklé používáním Aplikace.</li>
+                <li>Porušení zákonů uživatelem při používání Aplikace.</li>
+                <li>Ztrátu dat, poškození zařízení nebo narušení bezpečnosti.</li>
+                <li>Výpadky, chyby či nedostupnost služeb třetích stran (TMDb, Trakt.tv apod.).</li>
+                <li>Obsah, funkčnost nebo bezpečnost doplňků třetích stran.</li>
+                <li>Jakékoli jednání uživatele související s doplňky, které si sám nainstaloval.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>7. Externí služby a API</h2>
+            <p>Aplikace komunikuje s následujícími externími službami:</p>
+            <ul>
+                <li><strong>TMDb (The Movie Database)</strong> – pro metadata filmů a seriálů, plakáty a popisy. Aplikace <strong>není sponzorována ani certifikována</strong> společností TMDb.</li>
+                <li><strong>Trakt.tv</strong> – pro synchronizaci historie sledování (volitelné, vyžaduje přihlášení uživatele).</li>
+                <li><strong>Discord Rich Presence</strong> – pro zobrazení aktuálního stavu přehrávání (volitelné, pouze na desktopu).</li>
+            </ul>
+            <p>Uživatel je povinen dodržovat podmínky užití těchto externích služeb. Vývojář není nijak spojen ani oficiálně podporován těmito službami.</p>
+        </section>
+
+        <section>
+            <h2>8. Omezení distribuce</h2>
+            <ul>
+                <li>Aplikace nesmí být <strong>redistribuována v modifikované podobě</strong>.</li>
+                <li>Aplikace nesmí být použita pro <strong>komerční účely</strong> bez písemného souhlasu.</li>
+                <li>Jakékoliv forky nebo odvozená díla musí tuto právní doložku zachovat.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>9. Věkové omezení</h2>
+            <p>Aplikace je určena uživatelům starším <strong>13 let</strong>. Uživatelé mladší 18 let by měli Aplikaci používat pod dohledem zákonného zástupce. Vývojář nenese odpovědnost za přístup nezletilých osob k nevhodnému obsahu prostřednictvím doplňků třetích stran.</p>
+        </section>
+
+        <section>
+            <h2>10. Změny podmínek</h2>
+            <p>Vývojář si vyhrazuje právo tyto podmínky kdykoli aktualizovat. Aktualizované podmínky budou zveřejněny na této stránce s novým datem „Poslední aktualizace". Pokračujícím používáním Aplikace po zveřejnění aktualizovaných podmínek uživatel vyjadřuje souhlas s novým zněním.</p>
+        </section>
+
+        <hr style="border-color: rgba(255,255,255,0.08); margin: 3rem 0;">
+
+        <!-- ===================== -->
+        <!-- GDPR / PRIVACY -->
+        <!-- ===================== -->
+        <h2 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem;">Zásady ochrany osobních údajů (Privacy Policy)</h2>
+        <p>Tato sekce popisuje, jakým způsobem Aplikace zachází s daty uživatelů, v souladu s <strong>Nařízením Evropského parlamentu a Rady (EU) 2016/679</strong> (GDPR) a dalšími relevantními právními předpisy.</p>
+
+        <section>
+            <h2>11. Správce údajů</h2>
+            <p>Správcem ve smyslu GDPR je vývojář Aplikace – fyzická osoba vystupující pod pseudonymem <strong>LUKYMAS</strong>. Kontakt: <a href="mailto:mail@lukymas.eu.org" style="color: var(--primary)">mail@lukymas.eu.org</a>.</p>
+        </section>
+
+        <section>
+            <h2>12. Jaké údaje aplikace zpracovává</h2>
+            <p>Aplikace <strong>neshromažďuje, neodesílá ani nesdílí žádné osobní údaje</strong> na vlastní servery vývojáře. Veškerá data jsou uložena <strong>výhradně lokálně</strong> na zařízení uživatele:</p>
+            <ul>
+                <li><strong>Nastavení aplikace</strong> – jazyk, téma, konfigurace přehrávače, povolená lokální složka.</li>
+                <li><strong>Historie sledování</strong> – tituly zhlédnutých filmů a seriálů, pozice přehrávání.</li>
+                <li><strong>Přístupové tokeny</strong> – tokeny pro Trakt.tv (pokud uživatel službu propojí).</li>
+                <li><strong>Credentials doplňků</strong> – přihlašovací údaje k doplňkům (uloženy šifrovaně lokálně pomocí SharedPreferences).</li>
+                <li><strong>Identifikátor zařízení</strong> – náhodně vygenerovaný UUID pro systém přístupového kódu (neodpovídá žádnému osobnímu údaji).</li>
+                <li><strong>Cache</strong> – metadata filmů, výsledky vyhledávání (dočasné, s automatickou expirací).</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>13. Komunikace se servery třetích stran</h2>
+            <p>Aplikace komunikuje <strong>výhradně</strong> s následujícími externími službami (nikoli se servery vývojáře):</p>
+            <ul>
+                <li><strong>TMDb API</strong> – odesílá vyhledávací dotazy (název filmu/seriálu). TMDb může zpracovávat IP adresu uživatele dle svých vlastních zásad.</li>
+                <li><strong>Trakt.tv API</strong> – odesílá data o sledování (pouze pokud uživatel službu propojí). Trakt.tv zpracovává údaje dle svých zásad ochrany soukromí.</li>
+                <li><strong>Servery doplňků</strong> – pokud uživatel nainstaluje doplněk, Aplikace komunikuje se servery, které doplněk definuje. Vývojář Aplikace za tyto servery <strong>neodpovídá</strong>.</li>
+            </ul>
+            <p><strong>Aplikace neobsahuje žádný vlastní backend</strong> – vývojář nemá přístup k žádným datům uživatele.</p>
+        </section>
+
+        <section>
+            <h2>14. Právní základ zpracování (čl. 6 GDPR)</h2>
+            <ul>
+                <li><strong>Souhlas</strong> (čl. 6 odst. 1 písm. a) – uživatel souhlasí s podmínkami instalací a používáním Aplikace.</li>
+                <li><strong>Oprávněný zájem</strong> (čl. 6 odst. 1 písm. f) – lokální ukládání nastavení a historie pro fungování Aplikace.</li>
+                <li><strong>Plnění smlouvy</strong> (čl. 6 odst. 1 písm. b) – zpracování nezbytné pro poskytování funkcí Aplikace.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>15. Práva subjektu údajů (čl. 15–22 GDPR)</h2>
+            <p>Jelikož Aplikace <strong>neukládá žádná data na servery vývojáře</strong>, práva dle GDPR se uplatňují následovně:</p>
+            <ul>
+                <li><strong>Právo na přístup</strong> – veškerá data jsou uložena lokálně na zařízení, uživatel k nim má plný přístup.</li>
+                <li><strong>Právo na opravu</strong> – uživatel může kdykoli změnit svá nastavení v Aplikaci.</li>
+                <li><strong>Právo na výmaz</strong> – odinstalování Aplikace vymaže veškerá data. Uživatel může kdykoli vymazat cache, historii a credentials v Nastavení → Data.</li>
+                <li><strong>Právo na přenositelnost</strong> – data jsou uložena v standardních formátech na zařízení.</li>
+                <li><strong>Právo vznést námitku</strong> – kontaktujte vývojáře na <a href="mailto:mail@lukymas.eu.org" style="color: var(--primary)">mail@lukymas.eu.org</a>.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>16. Cookies a sledování</h2>
+            <p>Aplikace <strong>nepoužívá cookies, analytické nástroje, reklamní sítě ani sledovací technologie</strong>. Neexistuje žádný tracking, fingerprinting ani profilování uživatelů.</p>
+        </section>
+
+        <section>
+            <h2>17. Předávání údajů do třetích zemí</h2>
+            <p>Aplikace přímo nepředává osobní údaje do třetích zemí. Servery TMDb a Trakt.tv mohou být umístěny mimo EU/EHP – v takovém případě se uplatňují podmínky těchto služeb. Vývojář Aplikace za předávání údajů těmito službami neodpovídá.</p>
+        </section>
+
+        <section>
+            <h2>18. Uchovávání údajů</h2>
+            <ul>
+                <li>Data jsou uchovávána <strong>po dobu instalace Aplikace</strong> na zařízení.</li>
+                <li>Cache výsledků vyhledávání má <strong>automatickou expiraci 24 hodin</strong>.</li>
+                <li>Odinstalací Aplikace jsou <strong>všechna data nenávratně smazána</strong>.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>19. Bezpečnost údajů</h2>
+            <p>Aplikace ukládá přihlašovací údaje k doplňkům pomocí SharedPreferences. Přestože jsou data uložena pouze lokálně, uživatel by měl dbát na zabezpečení svého zařízení (zámek obrazovky, šifrování disku). Vývojář nenese odpovědnost za neoprávněný přístup k zařízení.</p>
+        </section>
+
+        <hr style="border-color: rgba(255,255,255,0.08); margin: 3rem 0;">
+
+        <!-- ===================== -->
+        <!-- SOUHLAS -->
+        <!-- ===================== -->
+        <section>
+            <h2 style="color: var(--primary); font-size: 1.5rem;">Souhlas s podmínkami</h2>
+            <p>Stažením, instalací nebo používáním Aplikace uživatel vyjadřuje <strong>bezvýhradný souhlas</strong> s těmito podmínkami užívání, vyloučením odpovědnosti a zásadami ochrany osobních údajů.</p>
+            <p>Pokud s těmito podmínkami nesouhlasíte, <strong>Aplikaci nepoužívejte a okamžitě ji odstraňte</strong> ze svého zařízení.</p>
+        </section>
+
+        <hr style="border-color: rgba(255,255,255,0.08); margin: 2rem 0;">
+
+        <p style="text-align: center; color: var(--on-surface-variant); font-size: 0.85rem; margin-top: 2rem;">
+            © 2025–2026 LUKYMAS / StreamujTo. Všechna práva vyhrazena.<br>
+            Tato aplikace nehostuje žádný obsah.
+        </p>
     </main>
 
     <footer>
         <div class="footer-links">
             <a href="index.html">Domů</a>
-            <a href="faq.html">Časté dotazy</a>
             <a href="download.html">Ke stažení</a>
+            <a href="faq.html">Časté dotazy</a>
+            <a href="addon-docs.html">Addon Dokumentace</a>
             <a href="disclaimer.html">Právní doložka</a>
-            <a href="https://discord.gg/1374461716573978734" target="_blank">Discord</a>
+            <a href="https://discord.com/invite/N7xasCqzh6" target="_blank">Discord</a>
         </div>
         <div class="copyright">
-            &copy; 2026 StreamujTo. Všechna práva vyhrazena.
+            &copy; 2026 StreamujTo. Všechna práva vyhrazena. <br>
+            StreamujTo je katalog a přehrávač — nehostuje ani nedistribuuje žádný obsah.
         </div>
     </footer>
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StreamujTo | Moderní filmový zážitek</title>
+    <title>StreamujTo | Katalog filmů, vyhledávač streamů a přehrávač</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/png" href="assets/logo.png">
@@ -19,18 +19,17 @@
             <ul>
                 <li><a href="#features">Funkce</a></li>
                 <li><a href="faq.html">FAQ</a></li>
-                <li><a href="#gallery">Galerie</a></li>
-                <li><a href="disclaimer.html">Právní info</a></li>
+                <li><a href="addon-docs.html">Addon Docs</a></li>
             </ul>
         </nav>
         <a href="download.html" class="btn-download">Stáhnout</a>
     </header>
 
     <section class="hero">
-        <h1>Najděte, co hledáte. <br><span style="color: var(--primary)">Okamžitě.</span></h1>
-        <p>StreamujTo funguje jako inteligentní vyhledávač a filtr pro vaši filmovou knihovnu. Najděte si jakýkoliv titul a aplikace jej automaticky lokalizuje ve vašich připojených úložištích.</p>
+        <h1>Katalog. Vyhledávač. Přehrávač. <br><span style="color: var(--primary)">Vše v jednom.</span></h1>
+        <p>StreamujTo je katalog filmů a seriálů, který vyhledá streamy na vašem úložišti — ať už lokálním, nebo přes doplněk — a rovnou je přehraje. Žádné přepínání mezi aplikacemi, žádné ruční hledání souborů.</p>
         <div class="cta-buttons">
-            <a href="download.html" class="btn-download" style="padding: 1rem 2.5rem; font-size: 1.2rem;">Vyzkoušet zdarma</a>
+            <a href="download.html" class="btn-download" style="padding: 1rem 2.5rem; font-size: 1.2rem;">Stáhnout zdarma</a>
         </div>
         
         <div class="hero-mockup">
@@ -40,41 +39,54 @@
 
     <section class="features" id="features">
         <h2 class="section-title">Jak to funguje?</h2>
+        <p style="text-align: center; max-width: 700px; margin: 0 auto 3rem; color: var(--on-surface-variant);">
+            Vyberte si film nebo seriál z katalogu → aplikace vyhledá dostupné streamy na vašem úložišti → klikněte a sledujte. Tak jednoduché to je.
+        </p>
         <div class="features-grid">
             <div class="feature-card">
-                <i class="fas fa-search"></i>
-                <h3>Unifikované vyhledávání</h3>
-                <p>Hledejte v milionech filmů a seriálů. Aplikace využívá výkonná API pro bleskové vyhledávání metadat a plakátů.</p>
+                <i class="fas fa-film"></i>
+                <h3>Katalog filmů a seriálů</h3>
+                <p>Procházejte tisíce titulů s plakáty, hodnocením a popisky. Katalog čerpá z TMDb a Trakt.tv a je vždy aktuální.</p>
             </div>
             <div class="feature-card">
-                <i class="fas fa-filter"></i>
-                <h3>Inteligentní filtr</h3>
-                <p>Aplikace slouží jako filtr, který propojuje informace o filmu s vašimi vlastními zdroji a úložišti.</p>
+                <i class="fas fa-search"></i>
+                <h3>Vyhledávač streamů</h3>
+                <p>Ke zvolenému titulu aplikace automaticky prohledá vaše úložiště — lokální složku nebo připojený doplněk — a najde dostupné streamy.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-play-circle"></i>
+                <h3>Vestavěný přehrávač</h3>
+                <p>Nalezený stream rovnou přehrajete v aplikaci. Podpora titulků, změna rychlosti, skip intro — vše na jednom místě.</p>
             </div>
             <div class="feature-card">
                 <i class="fas fa-puzzle-piece"></i>
-                <h3>Modulární Addony</h3>
-                <p>Přidejte si doplňky pro svá specifická úložiště. Vy rozhodujete, kam se má vyhledávač dívat.</p>
+                <h3>Doplňky (Addony)</h3>
+                <p>Připojte vlastní úložiště přes JSON doplňky. Komunita tvoří nové addony a vy si jen vyberete, které chcete používat.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-hdd"></i>
+                <h3>Lokální úložiště</h3>
+                <p>Máte filmy na disku? Přidejte lokální složku a StreamujTo je zařadí do katalogu a přehraje jako každý jiný stream.</p>
             </div>
             <div class="feature-card">
                 <i class="fas fa-users"></i>
                 <h3>Více profilů</h3>
-                <p>Podobně jako na velkých streamovacích službách si každý člen rodiny může vytvořit vlastní profil s vlastní historií.</p>
+                <p>Každý člen rodiny má vlastní profil s vlastní historií sledování, seznamem oblíbených a pokračováním v přehrávání.</p>
             </div>
             <div class="feature-card">
                 <i class="fas fa-tv"></i>
-                <h3>Podpora Chromecast</h3>
-                <p>Přeneste si kino do obýváku. Streamujte obsah z mobilu nebo počítače přímo do vaší televize.</p>
+                <h3>Chromecast</h3>
+                <p>Přeneste film z mobilu nebo počítače přímo na televizi. Stačí vybrat Chromecast zařízení a sledovat.</p>
             </div>
             <div class="feature-card">
-                <i class="fas fa-mobile-alt"></i>
-                <h3>Multiplatformní</h3>
-                <p>Dostupné pro Linux, Windows a Android. Vaše knihovna vás následuje všude.</p>
+                <i class="fas fa-laptop"></i>
+                <h3>Linux, Windows, Android</h3>
+                <p>Jedna aplikace na všech vašich zařízeních. Synchronizujte pokrok přes Trakt.tv a pokračujte odkudkoli.</p>
             </div>
             <div class="feature-card">
                 <i class="fab fa-discord"></i>
-                <h3>Discord RPC</h3>
-                <p>Ukažte přátelům, co právě sledujete, díky integraci bohaté přítomnosti v aplikaci Discord.</p>
+                <h3>Discord Rich Presence</h3>
+                <p>Automaticky ukažte přátelům na Discordu, jaký film nebo seriál právě sledujete.</p>
             </div>
         </div>
     </section>
@@ -112,14 +124,15 @@
     <footer>
         <div class="footer-links">
             <a href="index.html">Domů</a>
-            <a href="faq.html">Časté dotazy</a>
             <a href="download.html">Ke stažení</a>
+            <a href="faq.html">Časté dotazy</a>
+            <a href="addon-docs.html">Addon Dokumentace</a>
             <a href="disclaimer.html">Právní doložka</a>
-            <a href="https://discord.gg/your-invite-code" target="_blank">Discord</a>
+            <a href="https://discord.com/invite/N7xasCqzh6" target="_blank">Discord</a>
         </div>
         <div class="copyright">
             &copy; 2026 StreamujTo. Všechna práva vyhrazena. <br>
-            Tato aplikace nehostuje žádný obsah.
+            StreamujTo je katalog a přehrávač — nehostuje ani nedistribuuje žádný obsah.
         </div>
     </footer>
 
