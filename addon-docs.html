@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StreamujTo | Dokumentace Addon Systému</title>
+    <title>KELP | Dokumentace Addon Systému</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/png" href="assets/logo.png">
@@ -255,8 +255,8 @@
 
     <header>
         <a href="index.html" class="logo-container">
-            <img src="assets/logo.png" alt="StreamujTo Logo">
-            <span>StreamujTo</span>
+            <img src="assets/logo.png" alt="KELP Logo">
+            <span>KELP</span>
         </a>
         <nav>
             <ul>
@@ -331,12 +331,12 @@
         <main class="docs-content">
 
             <h1>Dokumentace Addon Systému</h1>
-            <p class="subtitle">Kompletní průvodce tvorbou externích doplňků úložišť pro StreamujTo</p>
+            <p class="subtitle">Kompletní průvodce tvorbou externích doplňků úložišť pro KELP</p>
 
             <!-- ========================= ÚVOD ========================= -->
             <h2 id="uvod">Úvod</h2>
             <p>
-                Aplikace StreamujTo v základní instalaci <strong>neobsahuje žádný zdroj streamů</strong> ani přístup k žádnému úložišti. 
+                Aplikace KELP v základní instalaci <strong>neobsahuje žádný zdroj streamů</strong> ani přístup k žádnému úložišti. 
                 Veškerá funkcionalita spojená s vyhledáváním a přehráváním souborů z externích služeb je zajištěna <strong>doplňky (addony)</strong>, 
                 které si uživatel importuje sám – z URL adresy nebo lokálního JSON souboru.
             </p>
@@ -363,27 +363,114 @@
             <h2 id="architektura">Architektura</h2>
             <p>Addon systém se skládá z následujících komponent:</p>
 
-            <div class="diagram"><span class="dim">┌──────────────────────────────────────────────────────────────┐</span>
-<span class="dim">│</span>                        <span class="hl">StreamujTo App</span>                         <span class="dim">│</span>
-<span class="dim">│                                                              │</span>
-<span class="dim">│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐   │</span>
-<span class="dim">│  │</span>  <span class="hl">AddonStore</span>   <span class="dim">│    │</span> <span class="hl">AddonRegistry</span> <span class="dim">│    │</span> <span class="hl">AddonImporter</span> <span class="dim">│   │</span>
-<span class="dim">│  │</span> (persistence) <span class="dim">│    │</span>  (runtime)    <span class="dim">│    │</span>  (URL/file)   <span class="dim">│   │</span>
-<span class="dim">│  └──────┬───────┘    └──────┬───────┘    └──────┬───────┘   │</span>
-<span class="dim">│         │                   │                   │           │</span>
-<span class="dim">│         └───────────┬───────┘───────────┬───────┘           │</span>
-<span class="dim">│                     ▼                   ▼                   │</span>
-<span class="dim">│           ┌──────────────────────────────────┐              │</span>
-<span class="dim">│           │</span>         <span class="hl">AddonEngine</span>                <span class="dim">│              │</span>
-<span class="dim">│           │</span>   (JSON interpreter / runner)    <span class="dim">│              │</span>
-<span class="dim">│           └────────────────┬─────────────┘              │</span>
-<span class="dim">│                            │                             │</span>
-<span class="dim">│                            ▼                             │</span>
-<span class="dim">│           ┌──────────────────────────────────┐              │</span>
-<span class="dim">│           │</span>       <span class="hl">AddonInterface</span>                <span class="dim">│              │</span>
-<span class="dim">│           │</span>  (abstract API kontrakt)         <span class="dim">│              │</span>
-<span class="dim">│           └──────────────────────────────────┘              │</span>
-<span class="dim">└──────────────────────────────────────────────────────────────┘</span></div>
+            <style>
+            .arch-diagram {
+                background: var(--surface-variant);
+                border: 1px solid rgba(255,255,255,0.05);
+                border-radius: 24px;
+                padding: 3rem 2rem;
+                margin: 3rem 0;
+                text-align: center;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            }
+            .arch-app-title {
+                font-weight: 900;
+                font-size: 1.8rem;
+                color: var(--on-surface);
+                margin-bottom: 2.5rem;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            .arch-row {
+                display: flex;
+                justify-content: center;
+                gap: 1.5rem;
+                margin-bottom: 2rem;
+                flex-wrap: wrap;
+            }
+            .arch-box {
+                background: #0D0D0F;
+                border: 1px solid rgba(255,255,255,0.1);
+                border-radius: 16px;
+                padding: 1.5rem;
+                min-width: 220px;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+                transition: transform 0.2s, border-color 0.2s;
+            }
+            .arch-box:hover {
+                transform: translateY(-5px);
+                border-color: rgba(255,255,255,0.3);
+            }
+            .arch-box.engine {
+                border-color: rgba(229, 9, 20, 0.4); /* Accent red */
+                max-width: 400px;
+                margin: 0 auto 2rem;
+                background: linear-gradient(180deg, #0D0D0F 0%, rgba(229, 9, 20, 0.05) 100%);
+            }
+            .arch-box.interface {
+                border-style: dashed;
+                border-color: rgba(255,255,255,0.2);
+                max-width: 400px;
+                margin: 0 auto;
+            }
+            .arch-box-title {
+                font-weight: 800;
+                font-size: 1.3rem;
+                color: #fff;
+                margin-bottom: 0.5rem;
+            }
+            .arch-box-sub {
+                font-size: 0.95rem;
+                color: var(--on-surface-variant);
+                font-weight: 500;
+            }
+            .arch-arrow {
+                color: var(--on-surface-variant);
+                font-size: 1.5rem;
+                margin-bottom: 2rem;
+            }
+            @media (max-width: 768px) {
+                .arch-row { flex-direction: column; align-items: center; }
+                .arch-box { width: 100%; min-width: auto; max-width: 300px; }
+            }
+            </style>
+
+            <div class="arch-diagram">
+                <div class="arch-app-title">KELP App</div>
+                
+                <div class="arch-row">
+                    <div class="arch-box">
+                        <div class="arch-box-title">AddonStore</div>
+                        <div class="arch-box-sub">(persistence)</div>
+                    </div>
+                    <div class="arch-box">
+                        <div class="arch-box-title">AddonRegistry</div>
+                        <div class="arch-box-sub">(runtime)</div>
+                    </div>
+                    <div class="arch-box">
+                        <div class="arch-box-title">AddonImporter</div>
+                        <div class="arch-box-sub">(URL / file)</div>
+                    </div>
+                </div>
+                
+                <div class="arch-arrow">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+                
+                <div class="arch-box engine">
+                    <div class="arch-box-title">AddonEngine</div>
+                    <div class="arch-box-sub">(JSON interpreter / runner)</div>
+                </div>
+                
+                <div class="arch-arrow">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+                
+                <div class="arch-box interface">
+                    <div class="arch-box-title">AddonInterface</div>
+                    <div class="arch-box-sub">(abstract API kontrakt)</div>
+                </div>
+            </div>
 
             <div class="docs-table-wrapper">
                 <table>
@@ -624,7 +711,7 @@
     "result": "{{stream_url}}",
     "headers": {
       "Referer": "https://example.com/",
-      "User-Agent": "StreamujTo/1.0",
+      "User-Agent": "KELP/1.0",
       "Authorization": "Bearer {{token}}"
     }
   }
@@ -1544,7 +1631,7 @@
             <div class="callout callout-danger">
                 <i class="fas fa-gavel"></i>
                 <p>
-                    <strong>Aplikace StreamujTo neobsahuje žádný obsah ani přístup k jakémukoli úložišti.</strong> 
+                    <strong>Aplikace KELP neobsahuje žádný obsah ani přístup k jakémukoli úložišti.</strong> 
                     Veškerá funkcionalita úložišť je zajištěna výhradně doplňky, které si uživatel importuje na vlastní odpovědnost. 
                     Vývojář aplikace neposkytuje, neschvaluje ani nekontroluje žádné doplňky.
                 </p>
@@ -1603,8 +1690,8 @@
             <a href="https://discord.com/invite/N7xasCqzh6" target="_blank">Discord</a>
         </div>
         <div class="copyright">
-            &copy; 2026 StreamujTo. Všechna práva vyhrazena. <br>
-            StreamujTo je katalog a přehrávač — nehostuje ani nedistribuuje žádný obsah.
+            &copy; 2026 KELP. Všechna práva vyhrazena. <br>
+            KELP je katalog a přehrávač — nehostuje ani nedistribuuje žádný obsah.
         </div>
     </footer>
 
