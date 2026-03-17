@@ -109,6 +109,17 @@
         <h1>Stáhnout KELP</h1>
         <p id="main-subtitle">Vyberte si verzi pro svůj operační systém. Aplikace nevyžaduje instalaci.</p>
 
+        <!-- Google Play Pre-registration Badge -->
+        <div style="margin: 2rem 0; text-align: center;">
+            <a href="https://play.google.com/store/apps/details?id=page.kelp" target="_blank" style="display: inline-block;">
+                <img src="assets/google-play-badge.png" alt="Předběžná registrace na Google Play" style="height: 60px;">
+            </a>
+            <p style="margin-top: 1rem; font-size: 1.1rem; color: var(--primary);">
+                <strong>Verze 5.0.0 je ve vývoji!</strong><br>
+                Pro předběžný přístup si můžete zažádat na našem <a href="https://discord.com/invite/N7xasCqzh6" target="_blank" style="color: var(--primary); text-decoration: underline;">Discordu</a>.
+            </p>
+        </div>
+
         <div class="download-grid">
             <a href="releases/latest/linux.zip" class="download-card" id="btn-linux">
                 <i class="fab fa-linux"></i>
@@ -164,7 +175,12 @@
                             const btn = document.getElementById(`btn-${id}`);
                             btn.classList.add('disabled');
                             if (btn.tagName === 'A') btn.href = 'javascript:void(0)';
-                            document.getElementById(`err-${id}`).style.display = 'inline-block';
+                            
+                            const errTag = document.getElementById(`err-${id}`);
+                            if (data.version && data.version.includes('vývoj')) {
+                                errTag.innerText = 'Ve vývoji';
+                            }
+                            errTag.style.display = 'inline-block';
                             document.getElementById(`ver-${id}`).style.display = 'none';
                             const abiLinks = document.getElementById('android-links');
                             if (id === 'android' && abiLinks) abiLinks.style.display = 'none';

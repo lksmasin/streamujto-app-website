@@ -1,9 +1,9 @@
 {
-  "version": "4.1.1+9",
-  "updated_at": "2026-03-09T21:43:02Z",
+  "version": "5.0.0 (ve vývoji)",
+  "updated_at": "2026-03-17T20:31:26Z",
   "platforms": {
-    "linux": true,
-    "windows": true,
-    "android": true
+    "linux": false,
+    "windows": false,
+    "android": false
   }
 }
