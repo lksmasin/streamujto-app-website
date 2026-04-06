@@ -10,7 +10,7 @@
     <style>
         .download-container {
             max-width: 1000px;
-            margin: 10rem auto;
+            margin: 10rem auto 4rem;
             text-align: center;
             padding: 2rem;
         }
@@ -36,12 +36,12 @@
         }
         .download-card:hover:not(.disabled) {
             transform: translateY(-5px);
-            background: rgba(0, 150, 136, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             border-color: var(--primary);
         }
         .download-card i {
             font-size: 3.5rem;
-            color: var(--primary);
+            color: #fff;
             margin-bottom: 1.5rem;
         }
         .download-card h3 {
@@ -53,7 +53,7 @@
             font-size: 0.9rem;
         }
         .version-info {
-            color: var(--primary-light);
+            color: var(--on-surface-variant);
             font-weight: 600;
             margin-bottom: 1rem;
         }
@@ -62,7 +62,7 @@
             cursor: not-allowed;
         }
         .error-tag {
-            background: var(--error);
+            background: var(--accent-red);
             color: white;
             padding: 2px 8px;
             border-radius: 4px;
@@ -70,21 +70,90 @@
             margin-bottom: 1rem;
             display: none;
         }
-        .abi-links {
-            display: flex;
-            gap: 10px;
-            margin-top: 1rem;
-        }
-        .abi-btn {
-            background: var(--primary-dark);
+        .beta-tag {
+            background: var(--accent-red);
             color: white;
-            padding: 5px 12px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            text-decoration: none;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
         }
-        .abi-btn:hover {
-            background: var(--primary);
+
+        /* Changelog Section */
+        .changelog-section {
+            max-width: 800px;
+            margin: 4rem auto 8rem;
+            text-align: left;
+            padding: 0 2rem;
+        }
+        .changelog-section h2 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .changelog-item {
+            background: var(--surface-variant);
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        .changelog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .changelog-version {
+            font-weight: 900;
+            font-size: 1.2rem;
+        }
+        .changelog-date {
+            color: var(--on-surface-variant);
+            font-size: 0.9rem;
+        }
+        .changelog-list {
+            list-style: none;
+        }
+        .changelog-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--on-surface-variant);
+        }
+        .changelog-list li::before {
+            content: "•";
+            color: var(--accent-red);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .beta-info {
+            background: rgba(229, 9, 20, 0.1);
+            border: 1px solid rgba(229, 9, 20, 0.3);
+            padding: 1.5rem;
+            border-radius: 20px;
+            margin-top: 2rem;
+            text-align: left;
+        }
+        .beta-info h4 {
+            color: #fff;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .beta-info p {
+            font-size: 0.95rem;
+            color: var(--on-surface-variant);
+        }
+        .beta-info a {
+            color: #fff;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -98,27 +167,17 @@
         <nav>
             <ul>
                 <li><a href="index.html#features">Funkce</a></li>
+                <li><a href="#changelog">Změny</a></li>
                 <li><a href="faq.html">FAQ</a></li>
                 <li><a href="addon-docs.html">Addon Docs</a></li>
             </ul>
         </nav>
-        <a href="download.html" class="btn-download" style="background-color: var(--primary-dark)">Stáhnout</a>
+        <a href="download.html" class="btn-download">Stáhnout</a>
     </header>
 
     <main class="download-container">
         <h1>Stáhnout KELP</h1>
-        <p id="main-subtitle">Vyberte si verzi pro svůj operační systém. Aplikace nevyžaduje instalaci.</p>
-
-        <!-- Google Play Pre-registration Badge -->
-        <div style="margin: 2rem 0; text-align: center;">
-            <a href="https://play.google.com/store/apps/details?id=page.kelp" target="_blank" style="display: inline-block;">
-                <img src="assets/google-play-badge.png" alt="Předběžná registrace na Google Play" style="height: 60px;">
-            </a>
-            <p style="margin-top: 1rem; font-size: 1.1rem; color: var(--primary);">
-                <strong>Verze 5.0.0 je ve vývoji!</strong><br>
-                Pro předběžný přístup si můžete zažádat na našem <a href="https://discord.com/invite/N7xasCqzh6" target="_blank" style="color: var(--primary); text-decoration: underline;">Discordu</a>.
-            </p>
-        </div>
+        <p>Vyberte si verzi pro svůj operační systém.</p>
 
         <div class="download-grid">
             <a href="releases/latest/linux.zip" class="download-card" id="btn-linux">
@@ -129,17 +188,15 @@
                 <p>Spustitelný binární soubor</p>
             </a>
             
-            <div class="download-card" id="btn-android">
+            <a href="https://play.google.com/store/apps/details?id=page.kelp" class="download-card" id="btn-android" target="_blank">
+                <span class="beta-tag">Uzavřená Beta</span>
                 <i class="fab fa-android"></i>
-                <h3>Android / Android TV</h3>
+                <h3>Android / AndroidTV</h3>
                 <span class="version-info" id="ver-android">Načítám...</span>
                 <span class="error-tag" id="err-android">Dočasně nedostupné</span>
-                <p>Vyberte architekturu svého zařízení:</p>
-                <div class="abi-links" id="android-links">
-                    <a href="releases/latest/android-arm64.zip" class="abi-btn">ARM64 (Novější)</a>
-                    <a href="releases/latest/android-armv7.zip" class="abi-btn">ARMv7 (Starší)</a>
-                </div>
-            </div>
+                <p>Instalujte přímo z Google Play</p>
+                <img src="assets/google-play-badge.png" alt="Get it on Google Play" style="height: 60px; margin-top: 1rem; border-radius: 8px;">
+            </a>
 
             <a href="releases/latest/windows.zip" class="download-card" id="btn-windows">
                 <i class="fab fa-windows"></i>
@@ -150,10 +207,60 @@
             </a>
         </div>
 
+        <div class="beta-info">
+            <h4><i class="fas fa-info-circle"></i> Přístup k uzavřené betě</h4>
+            <p>
+                Pro získání přístupu k verzi na Google Play mi prosím napište e-mail na 
+                <a href="mailto:mail@lukymas.eu.org">mail@lukymas.eu.org</a> a uveďte váš <strong>Gmail účet</strong>, který používáte pro přihlášení do Google Play. 
+                Případně mě můžete kontaktovat napřímo na našem <strong>Discordu</strong>.
+            </p>
+        </div>
+
         <div style="margin-top: 4rem;">
             <a href="archive.html" style="color: var(--on-surface-variant); text-decoration: underline;">Archiv starších verzí</a>
         </div>
     </main>
+
+    <section class="changelog-section" id="changelog">
+        <h2>Co je nového</h2>
+        
+        <div class="changelog-item">
+            <div class="changelog-header">
+                <span class="changelog-version">v5-openbeta</span>
+                <span class="changelog-date">5. dubna 2026</span>
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+                <h4 style="color: #fff; margin-bottom: 0.5rem;">Novinky v této verzi: ✨</h4>
+                <ul class="changelog-list">
+                    <li><strong>Systém doplňků:</strong> Aplikace nyní sama o sobě neobsahuje žádné vzdálené úložiště. Uživatel může nastavit lokální úložiště nebo použít doplňky z internetu. Dokumentaci najdete na <a href="https://kelp.page/addon-docs" style="color: var(--accent-red)">webu</a>.</li>
+                    <li><strong>Nový přehrávač:</strong> Přehrávač je nyní pokročilejší a jednodušší na ovládání.
+                        <ul>
+                            <li>Výběr mezi MPV a ExoPlayer jádrem na Androidu.</li>
+                            <li>Funkce "Přeskočit intro" založená na kapitolách v MKV.</li>
+                            <li>Přidán Automatic Frame Rate (AFR).</li>
+                            <li>Funkce "Přehrát další epizodu" (detekce přes kapitoly).</li>
+                            <li>Nastavení poměru stran videa a nové klávesové zkratky (i, a, esc...).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Design a UX:</strong> Nové barevné schéma (černá, bílá, červená), předělaná Domovská obrazovka, Knihovna a Detail filmu. Přidáno intro a zvuky při navigaci.</li>
+                    <li><strong>Profily a Trakt.tv:</strong> Podpora více uživatelských profilů. Trakt.tv již není vyžadován, ale je doporučen pro nejlepší zážitek.</li>
+                    <li><strong>Lokalizace:</strong> Kompletní podpora slovenštiny.</li>
+                    <li><strong>TV Optimalizace:</strong> Automatická detekce a přizpůsobení měřítka UI, možnost manuální změny velikosti prvků a textu.</li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 style="color: #fff; margin-bottom: 0.5rem;">Opraveno a vylepšení: 🛠️</h4>
+                <ul class="changelog-list">
+                    <li>Vylepšené ovládání TV ovladačem včetně podpory klávesových zkratek.</li>
+                    <li>Zlepšený výkon a celková stabilita aplikace.</li>
+                    <li>Synchronizace Trakt.tv (beta).</li>
+                    <li>Standardizované widgety pro domovskou obrazovku a knihovnu.</li>
+                    <li>Dynamická cache pro data, widgety a obrázky.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
 
     <script>
         async function checkAvailability() {
@@ -173,17 +280,14 @@
                         const isOk = data.platforms[key];
                         if (isOk === false) {
                             const btn = document.getElementById(`btn-${id}`);
-                            btn.classList.add('disabled');
-                            if (btn.tagName === 'A') btn.href = 'javascript:void(0)';
-                            
-                            const errTag = document.getElementById(`err-${id}`);
-                            if (data.version && data.version.includes('vývoj')) {
-                                errTag.innerText = 'Ve vývoji';
+                            if (btn) {
+                                btn.classList.add('disabled');
+                                if (btn.tagName === 'A') btn.href = 'javascript:void(0)';
                             }
-                            errTag.style.display = 'inline-block';
-                            document.getElementById(`ver-${id}`).style.display = 'none';
-                            const abiLinks = document.getElementById('android-links');
-                            if (id === 'android' && abiLinks) abiLinks.style.display = 'none';
+                            const errEl = document.getElementById(`err-${id}`);
+                            if (errEl) errEl.style.display = 'inline-block';
+                            const verEl = document.getElementById(`ver-${id}`);
+                            if (verEl) verEl.style.display = 'none';
                         }
                     };
                     check('linux', 'linux');
@@ -201,6 +305,7 @@
         <div class="footer-links">
             <a href="index.html">Domů</a>
             <a href="download.html">Ke stažení</a>
+            <a href="#changelog">Změny</a>
             <a href="faq.html">Časté dotazy</a>
             <a href="addon-docs.html">Addon Dokumentace</a>
             <a href="disclaimer.html">Právní doložka</a>

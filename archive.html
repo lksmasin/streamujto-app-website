@@ -99,7 +99,7 @@
                 if (versions.length === 0) throw new Error('Žádné verze k zobrazení');
 
                 body.innerHTML = '';
-                versions.forEach(v => {
+                versions.reverse().forEach(v => {
                     const row = document.createElement('tr');
                     const date = new Date(v.date).toLocaleDateString('cs-CZ');
                     row.innerHTML = `
@@ -108,11 +108,7 @@
                         <td>
                             <a href="releases/archive/${v.version}/linux.zip" class="download-link">Linux</a>
                             <a href="releases/archive/${v.version}/windows.zip" class="download-link">Windows</a>
-                            ${v.version === '4.0.0+1' ? 
-                                `<a href="releases/archive/${v.version}/android.zip" class="download-link">Android</a>` : 
-                                `<a href="releases/archive/${v.version}/android-arm64.zip" class="download-link">Android (ARM64)</a>
-                                 <a href="releases/archive/${v.version}/android-armv7.zip" class="download-link">Android (ARMv7)</a>`
-                            }
+                            <a href="releases/archive/${v.version}/android.zip" class="download-link">Android</a>
                         </td>
                     `;
                     body.appendChild(row);
