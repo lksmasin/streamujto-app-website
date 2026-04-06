@@ -265,7 +265,7 @@
     <script>
         async function checkAvailability() {
             try {
-                const response = await fetch('releases/latest/version.json');
+                const response = await fetch(`releases/latest/version.json?t=${Date.now()}`, { cache: 'no-store' });
                 if (!response.ok) return;
                 const data = await response.json();
                 
