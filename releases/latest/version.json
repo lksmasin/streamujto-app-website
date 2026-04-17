@@ -1,6 +1,6 @@
 {
-  "version": "5.0.0-openbeta+8",
-  "updated_at": "2026-04-06T12:29:16Z",
+  "version": "5.0.0-openbeta1+9",
+  "updated_at": "2026-04-17T21:03:39Z",
   "platforms": {
     "linux": true,
     "windows": true,
